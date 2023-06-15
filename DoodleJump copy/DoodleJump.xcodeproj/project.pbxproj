@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
 		4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */; };
 		4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23D02A384AEC00DD26E7 /* ContentView.swift */; };
 		4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D22A384AED00DD26E7 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		4BFC23CB2A384AEC00DD26E7 /* DoodleJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodleJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoodleJumpApp.swift; sourceTree = "<group>"; };
 		4BFC23D02A384AEC00DD26E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				4BFC23D22A384AED00DD26E7 /* Assets.xcassets */,
 				4BFC23D42A384AED00DD26E7 /* Preview Content */,
 				4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */,
+				30444F412A3B06A6000B5350 /* MotionManager.swift */,
 			);
 			path = DoodleJump;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
+				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,
 				4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */,
 				4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */,
@@ -279,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DoodleJump/Preview Content\"";
-				DEVELOPMENT_TEAM = BJQUJR83ZY;
+				DEVELOPMENT_TEAM = 3R8392Y763;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -308,7 +312,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DoodleJump/Preview Content\"";
-				DEVELOPMENT_TEAM = BJQUJR83ZY;
+				DEVELOPMENT_TEAM = 3R8392Y763;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

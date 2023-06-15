@@ -22,8 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var bestScore = 0
     
     let cam = SKCameraNode()
-    
-    
+    let motionActivity = Motion()
     
     enum bitmasks : UInt32{
         case player = 0b1
@@ -115,6 +114,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreLabel.position.y = player.position.y + 700
         bestScoreLabel.position.y = player.position.y + 650
         
+        var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
+        
+        if newPosition >= -40 && newPosition <= 430 {
+            player.position.x = newPosition
+        }
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -147,18 +152,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.gameOverLine.rawValue{
             gameOver()
         }
-            
-        
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches{
-            let location = touch.location(in: self)
-            
-            player.position.x = location.x
-            
-        }
-    }
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for touch in touches{
+//            let location = touch.location(in: self)
+//
+//            player.position.x = location.x
+//
+//        }
+//    }
+    
+    
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
@@ -167,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
         }
         firstTouch = true
-        
+        motionActivity.startAccelorometerUpdate()
         
     }
     
