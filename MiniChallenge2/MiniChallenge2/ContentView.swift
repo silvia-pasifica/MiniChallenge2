@@ -25,6 +25,7 @@ struct ContentView: View {
                     } label: {
                         Text(item.timestamp!, formatter: itemFormatter)
                     }
+                    Text("testing branch")
                 }
                 .onDelete(perform: deleteItems)
             }
