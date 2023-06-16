@@ -13,6 +13,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let background = SKSpriteNode(imageNamed: "background")
     let player = SKSpriteNode(imageNamed: "bunny")
     let ground = SKSpriteNode(imageNamed: "ground_grass")
+    let tree = SKSpriteNode(imageNamed: "tree")
+    let dog = SKSpriteNode(imageNamed: "dog")
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
@@ -37,6 +39,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = 1
         addChild(background)
+        
+        tree.position = CGPoint(x: size.width / 2 , y: size.height / 2)
+        tree.zPosition = 2
+        addChild(tree)
+        
+        dog.position = CGPoint(x: size.width / 2 + 50 , y: size.height / 2)
+        dog.zPosition = 3
+        addChild(dog)
         
         physicsWorld.contactDelegate = self
         
@@ -108,6 +118,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         background.position.y = player.position.y +  200
         background.setScale(1.5)
         
+        tree.position.y = player.position.y + 200
+        dog.position.y = player.position.y + 200
+        
         if player.physicsBody!.velocity.dy > 0 {
             gameOverLine.position.y = player.position.y - 600 //remove the platform
         }
@@ -117,9 +130,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
         if newPosition >= -40 && newPosition <= 430 {
+            let difference = player.position.x - newPosition
+            
             player.position.x = newPosition
+            tree.position.x = size.width / 2 - newPosition / 4
+            dog.position.x = size.width / 2 - newPosition / 2
         }
-        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
