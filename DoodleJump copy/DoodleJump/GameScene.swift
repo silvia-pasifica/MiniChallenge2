@@ -138,7 +138,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
+    @objc func doubleTapped() {
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
+        makePlatform5()
+        makePlatform6()
+        makePlatform7()
+        makePlatform8()
+        makePlatform9()
+        makePlatform10()
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = 2
+        view!.addGestureRecognizer(tap)
+        
         let contactA: SKPhysicsBody
         let contactB: SKPhysicsBody
         
@@ -284,23 +298,85 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         addChild(platform)
     }
     
-//    func makePlatform2(){
-//
-//        let platform2 = SKSpriteNode(imageNamed: "ground_grass_broken")
-//        platform2.position = CGPoint(x: size.width / 2, y : size.height / 4 + player.position.y)
-//        platform2.zPosition = 5
-//        platform2.physicsBody = SKPhysicsBody(rectangleOf: platform2.size)
-//        platform2.setScale(0.2)
-//
-//        platform2.physicsBody?.isDynamic = false
-//        platform2.physicsBody?.allowsRotation = false
-//        platform2.physicsBody?.affectedByGravity = false
-//        platform2.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-//        platform2.physicsBody?.collisionBitMask = 0
-//        platform2.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-//
-//        addChild(platform2)
-//    }
+    func makePlatform7(){
+        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1600, highestValue: 1800).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        platform.setScale(0.2)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        addChild(platform)
+    }
+    
+    func makePlatform8(){
+        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1850, highestValue: 2050).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        platform.setScale(0.2)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        addChild(platform)
+    }
+    
+    func makePlatform9(){
+        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2100, highestValue: 2300).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        platform.setScale(0.2)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        addChild(platform)
+    }
+    
+    func makePlatform10(){
+        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2350, highestValue: 2550).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        platform.setScale(0.2)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        addChild(platform)
+    }
+    
+    func makePlatform11(){
+        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2600, highestValue: 2800).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        platform.setScale(0.2)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+
+        addChild(platform)
+    }
     
     func gameOver()
     {
