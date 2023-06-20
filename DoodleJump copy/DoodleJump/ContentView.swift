@@ -21,6 +21,7 @@ class StartScene: SKScene{
             if startNode.name == "startButton"
             {
                 let game = GameScene(size: self.size)
+//                let game = Stage_3(size: self.size)
                 let transition = SKTransition.doorway(withDuration: 3)
                 self.view?.presentScene(game, transition: transition)
             }
@@ -44,5 +45,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+       
     }
 }
