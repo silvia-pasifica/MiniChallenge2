@@ -13,6 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let background = SKSpriteNode(imageNamed: "background")
     let player = SKSpriteNode(imageNamed: "bunny")
     let ground = SKSpriteNode(imageNamed: "ground_grass")
+    let monster = SKSpriteNode(imageNamed: "monster")
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
@@ -20,14 +21,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let defaults = UserDefaults.standard
     var score = 0
     var bestScore = 0
-    
     let cam = SKCameraNode()
     let motionActivity = Motion()
-    
+    var platformheight = CGFloat()
     enum bitmasks : UInt32{
         case player = 0b1
         case platform = 0b10
         case gameOverLine
+        case monster
     }
     
     override func didMove(to view: SKView) {
@@ -62,6 +63,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody?.collisionBitMask = 0
         player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.gameOverLine.rawValue
         addChild(player)
+        
+        monster.position = CGPoint(x: player.position.x, y: player.position.y - 150)
+        monster.zPosition = 10
+        monster.setScale(0.20)
+        monster.physicsBody = SKPhysicsBody(circleOfRadius: monster.size.height / 2)
+        monster.physicsBody?.isDynamic = false
+        monster.physicsBody?.restitution = 1
+        monster.physicsBody?.friction = 0
+        monster.physicsBody?.angularDamping = 0
+        monster.physicsBody?.categoryBitMask = bitmasks.monster.rawValue
+        monster.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
+        addChild(monster)
         
         gameOverLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
         gameOverLine.zPosition = -1
@@ -99,6 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         cam.setScale(1.5)
         cam.position.x = player.position.x
+        
         camera = cam
         
     }
@@ -110,7 +124,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if player.physicsBody!.velocity.dy > 0 {
             gameOverLine.position.y = player.position.y - 600 //remove the platform
+            
+            
         }
+        if player.position.y - monster.position.y < 600 {
+            
+        }else{
+            monster.position.y = player.position.y - 600
+        }
+//        if player.physicsBody!.velocity.dy < 0{
+//
+//        }else{
+//            monster.position.y = player.position.y - 400
+//        }
+        monster.position.x = player.position.x
         scoreLabel.position.y = player.position.y + 700
         bestScoreLabel.position.y = player.position.y + 650
         
@@ -125,7 +152,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA: SKPhysicsBody
         let contactB: SKPhysicsBody
-        
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask{
             contactA = contact.bodyA //player
             contactB = contact.bodyB //platform
@@ -141,15 +167,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.platform.rawValue{
             if player.physicsBody!.velocity.dy < 0 {
+                monster.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 400)
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
-                contactB.node?.removeFromParent()
-                makePlatform5()
-                makePlatform6()
-                addScore()
+                if(platformheight < player.position.y){
+                    platformheight = player.position.y + 20
+                    makePlatform5()
+                    makePlatform6()
+                    addScore()
+                }
             }
         }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.gameOverLine.rawValue{
+            gameOver()
+        }
+        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.monster.rawValue{
             gameOver()
         }
     }
@@ -175,7 +207,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         motionActivity.startAccelorometerUpdate()
         
     }
-    
+    func shootBall() {
+        let ballNode = SKShapeNode(circleOfRadius: 10.0)
+        ballNode.fillColor = .red
+        ballNode.position = CGPoint(x: frame.midX, y: frame.minY)
+        addChild(ballNode)
+
+        let shoot = SKAction.moveBy(x: 0.0, y: 100.0, duration: 1.0) // Adjust the y value as needed
+        let sequence = SKAction.sequence([shoot, SKAction.removeFromParent()])
+        ballNode.run(sequence)
+
+        let delay = SKAction.wait(forDuration: 2.0)
+        let shootAgain = SKAction.run {
+            self.shootBall() // Recursive call to shoot the ball again after a delay
+        }
+        let repeatAction = SKAction.sequence([delay, shootAgain])
+        run(repeatAction)
+    }
     func makePlatform(){
         let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 140, highestValue: 300).nextInt() + Int(player.position.y) )
