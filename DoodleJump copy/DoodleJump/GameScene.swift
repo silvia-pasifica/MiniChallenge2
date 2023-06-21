@@ -32,6 +32,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     let motionActivity = Motion()
     
+    var playerArray = [SKTexture]()
+    
     enum bitmasks : UInt32{
         case player = 0b1
         case platform = 0b10
@@ -136,6 +138,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         makePlatform5()
         makePlatform6()
         
+        playerArray.append(SKTexture(imageNamed: "1"))
+        playerArray.append(SKTexture(imageNamed: "2"))
+        playerArray.append(SKTexture(imageNamed: "3"))
+        
         
         cam.setScale(1.0)
         cam.position.x = player.position.x
@@ -173,6 +179,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg6.position.y = player.position.y + 200
         bg7.position.y = player.position.y + 200
         
+        if player.physicsBody!.velocity.dy == 1200 {
+            player.texture = SKTexture(imageNamed: "1")
+        }
+        
         if player.physicsBody!.velocity.dy > 0 {
             gameOverLine.position.y = player.position.y - 600 //remove the platform
         }
@@ -188,6 +198,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             tree.position.x = size.width / 2 - newPosition / 13
             bg4.position.x = size.width / 2 - newPosition / 14
             bg7.position.x = size.width / 2 - newPosition / 20
+            
+            if player.position.x >= 150 && player.position.x <= 240 {
+                player.texture = SKTexture(imageNamed: "bunny")
+            } else if player.position.x < 150 {
+                player.texture = SKTexture(imageNamed: "2")
+            } else {
+                player.texture = SKTexture(imageNamed: "3")
+            }
         }
         containerNode.position = player.position
     }
@@ -228,6 +246,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
                 contactB.node?.removeFromParent()
+//                player.texture = SKTexture(imageNamed: "bunny")
+//                player.run(SKAction.animate(with: playerArray, timePerFrame: 0.5))
                 makePlatform5()
                 makePlatform6()
                 addScore()
@@ -255,6 +275,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody?.isDynamic = true
         if firstTouch == false{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
+
+//            player.run(SKAction.animate(with: playerArray, timePerFrame: 0.5))
         }
         firstTouch = true
         motionActivity.startAccelorometerUpdate()
