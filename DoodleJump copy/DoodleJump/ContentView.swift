@@ -7,12 +7,27 @@
 
 import SwiftUI
 import SpriteKit
+import AVFoundation
 
 class StartScene: SKScene{
+    private var videoNode: SKVideoNode?
+    let videoURL = Bundle.main.url(forResource: "game_menu", withExtension: "mov")!
+    
+    var videoLooper: AVPlayerLooper?
+    
     override func didMove(to view: SKView) {
-        self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        scene?.scaleMode = .aspectFill
+        let playerItem = AVPlayerItem(url: videoURL)
+        let player = AVQueuePlayer()
+        videoLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+        
+        videoNode = SKVideoNode(avPlayer: player)
+        videoNode?.position = CGPoint(x: frame.midX, y: frame.midY)
+        videoNode?.size = CGSize(width: size.width, height: size.height)
+        addChild(videoNode!)
+
+        videoNode?.play()
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches{
             let lokation = touch.location(in: self)
@@ -20,9 +35,13 @@ class StartScene: SKScene{
             
             if startNode.name == "startButton"
             {
-                let game = GameScene(size: self.size)
-                let transition = SKTransition.doorway(withDuration: 3)
-                self.view?.presentScene(game, transition: transition)
+//                videoNode?.run(SKAction.scale(to: 5, duration: 0.5))
+                videoLooper?.disableLooping()
+                videoNode?.pause()
+                self.videoLooper = nil
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.view?.presentScene(GameScene(size: self.size), transition: SKTransition.fade(withDuration: 3))
+//                }
             }
         }
     }
@@ -30,18 +49,11 @@ class StartScene: SKScene{
 }
 
 struct ContentView: View {
-     let startScene = StartScene(fileNamed: "StartScene")!
-    
     var body: some View {
         VStack {
-            SpriteView(scene: startScene).ignoresSafeArea()
+            SpriteView(scene: StartScene(fileNamed: "StartScene")!)
+                .ignoresSafeArea()
         }
         
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

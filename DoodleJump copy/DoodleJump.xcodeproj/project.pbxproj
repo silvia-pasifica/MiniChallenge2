@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		301F92FB2A433FB2006847F5 /* game_menu.mov in Resources */ = {isa = PBXBuildFile; fileRef = 301F92FA2A433FB2006847F5 /* game_menu.mov */; };
 		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
 		4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */; };
 		4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23D02A384AEC00DD26E7 /* ContentView.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		301F92FA2A433FB2006847F5 /* game_menu.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = game_menu.mov; path = Assets.xcassets/game_menu.dataset/game_menu.mov; sourceTree = "<group>"; };
 		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		4BFC23CB2A384AEC00DD26E7 /* DoodleJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodleJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoodleJumpApp.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 		4BFC23CD2A384AEC00DD26E7 /* DoodleJump */ = {
 			isa = PBXGroup;
 			children = (
+				301F92FA2A433FB2006847F5 /* game_menu.mov */,
 				4BFC23DE2A385EE700DD26E7 /* GameScene.swift */,
 				4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */,
 				4BFC23D02A384AEC00DD26E7 /* ContentView.swift */,
@@ -140,6 +143,7 @@
 				4BFC23DD2A38563B00DD26E7 /* StartScene.sks in Resources */,
 				4BFC23D62A384AED00DD26E7 /* Preview Assets.xcassets in Resources */,
 				4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */,
+				301F92FB2A433FB2006847F5 /* game_menu.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

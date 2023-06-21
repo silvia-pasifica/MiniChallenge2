@@ -10,11 +10,11 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let background = SKSpriteNode(imageNamed: "bg1")
+    let bg1 = SKSpriteNode(imageNamed: "bg1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platformBiasa")
-    let tree = SKSpriteNode(imageNamed: "bg2")
-    let dog = SKSpriteNode(imageNamed: "bg3")
+    let bg2 = SKSpriteNode(imageNamed: "bg2")
+    let bg3 = SKSpriteNode(imageNamed: "bg3")
     let bg4 = SKSpriteNode(imageNamed: "bg4")
     let bg5 = SKSpriteNode(imageNamed: "bg5")
     let bg6 = SKSpriteNode(imageNamed: "bg6")
@@ -45,20 +45,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
         
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.setScale(0.37)
-        background.zPosition = 1
-        addChild(background)
+        bg1.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg1.setScale(0.37)
+        bg1.zPosition = 1
+        addChild(bg1)
         
-        tree.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        tree.zPosition = 2
-        tree.setScale(0.4)
-        addChild(tree)
+        bg2.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg2.zPosition = 2
+        bg2.setScale(0.4)
+        addChild(bg2)
         
-        dog.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        dog.zPosition = 3
-        dog.setScale(0.4)
-        addChild(dog)
+        bg3.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg3.zPosition = 3
+        bg3.setScale(0.4)
+        addChild(bg3)
         
         bg4.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bg4.zPosition = 3
@@ -77,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         bg7.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bg7.zPosition = 3
-        bg7.setScale(0.37)
+        bg7.size = CGSize(width: size.width, height: size.height)
         addChild(bg7)
         
         physicsWorld.contactDelegate = self
@@ -138,11 +138,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         makePlatform5()
         makePlatform6()
         
-        playerArray.append(SKTexture(imageNamed: "1"))
-        playerArray.append(SKTexture(imageNamed: "2"))
-        playerArray.append(SKTexture(imageNamed: "3"))
-        
-        
         cam.setScale(1.0)
         cam.position.x = player.position.x
         camera = cam
@@ -165,15 +160,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         circleNode.glowWidth = 150 // Mengatur lebar bayangan luar
        
         // Menambahkan lingkaran node ke dalam wadah node
-        containerNode.addChild(circleNode)
+//        containerNode.addChild(circleNode)
     }
     override func update(_ currentTime: TimeInterval) {
 //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
         cam.position.y = player.position.y + 200
-        background.position.y = player.position.y +  200
+        bg1.position.y = player.position.y +  200
         
-        tree.position.y = player.position.y + 200
-        dog.position.y = player.position.y + 200
+        bg2.position.y = player.position.y + 200
+        bg3.position.y = player.position.y + 200
         bg4.position.y = player.position.y + 200
         bg5.position.y = player.position.y + 200
         bg6.position.y = player.position.y + 200
@@ -191,13 +186,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
-        if newPosition >= -40 && newPosition <= 430 {
+        if newPosition >= 10 && newPosition <= 380 {
             let difference = player.position.x - newPosition
             
             player.position.x = newPosition
-            tree.position.x = size.width / 2 - newPosition / 13
-            bg4.position.x = size.width / 2 - newPosition / 14
-            bg7.position.x = size.width / 2 - newPosition / 20
+            bg2.position.x += difference / 11
+            bg3.position.x += difference / 8
+            bg4.position.x += difference / 8
+            bg5.position.x -= difference / 8
+            bg7.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
                 player.texture = SKTexture(imageNamed: "jump-front")
