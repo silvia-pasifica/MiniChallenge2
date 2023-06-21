@@ -11,7 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
     let background = SKSpriteNode(imageNamed: "bg1")
-    let player = SKSpriteNode(imageNamed: "iris")
+    let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platformBiasa")
     let tree = SKSpriteNode(imageNamed: "bg2")
     let dog = SKSpriteNode(imageNamed: "bg3")
@@ -180,7 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg7.position.y = player.position.y + 200
         
         if player.physicsBody!.velocity.dy == 1200 {
-            player.texture = SKTexture(imageNamed: "1")
+            player.texture = SKTexture(imageNamed: "idle-front")
         }
         
         if player.physicsBody!.velocity.dy > 0 {
@@ -200,11 +200,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             bg7.position.x = size.width / 2 - newPosition / 20
             
             if player.position.x >= 150 && player.position.x <= 240 {
-                player.texture = SKTexture(imageNamed: "bunny")
+                player.texture = SKTexture(imageNamed: "jump-front")
             } else if player.position.x < 150 {
-                player.texture = SKTexture(imageNamed: "2")
+                player.texture = SKTexture(imageNamed: "jump-left")
             } else {
-                player.texture = SKTexture(imageNamed: "3")
+                player.texture = SKTexture(imageNamed: "jump-right")
             }
         }
         containerNode.position = player.position
@@ -218,7 +218,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         makePlatform8()
         makePlatform9()
         makePlatform10()
-        makePlatform11()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -246,8 +245,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
                 contactB.node?.removeFromParent()
-//                player.texture = SKTexture(imageNamed: "bunny")
-//                player.run(SKAction.animate(with: playerArray, timePerFrame: 0.5))
+                if player.position.x >= 150 && player.position.x <= 240 {
+                    player.texture = SKTexture(imageNamed: "idle-front")
+                } else if player.position.x < 150 {
+                    player.texture = SKTexture(imageNamed: "idle-left")
+                } else {
+                    player.texture = SKTexture(imageNamed: "idle-right")
+                }
                 makePlatform5()
                 makePlatform6()
                 addScore()
@@ -259,24 +263,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for touch in touches{
-//            let location = touch.location(in: self)
-//
-//            player.position.x = location.x
-//
-//        }
-//    }
-    
-    
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         player.physicsBody?.isDynamic = true
         if firstTouch == false{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
-
-//            player.run(SKAction.animate(with: playerArray, timePerFrame: 0.5))
         }
         firstTouch = true
         motionActivity.startAccelorometerUpdate()
@@ -445,22 +436,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         
-        addChild(platform)
-    }
-    
-    func makePlatform11(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2600, highestValue: 2800).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-
         addChild(platform)
     }
     
