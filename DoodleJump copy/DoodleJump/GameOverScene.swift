@@ -36,7 +36,7 @@ class GameOverScene: SKScene
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let gameScene = GameScene(size: self.size)
+        let gameScene = Stage_3(size: self.size)
         let transition = SKTransition.flipVertical(withDuration: 1)
         
         view?.presentScene(gameScene,transition: transition)
