@@ -34,7 +34,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            
             SpriteView(scene: startScene).ignoresSafeArea()
         }
         
