@@ -16,6 +16,7 @@
 		4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23DE2A385EE700DD26E7 /* GameScene.swift */; };
 		4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */; };
 		D55952BB2A3C3D020001C94A /* Stage 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BA2A3C3D020001C94A /* Stage 3.swift */; };
+		D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		4BFC23DE2A385EE700DD26E7 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		D55952BA2A3C3D020001C94A /* Stage 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stage 3.swift"; sourceTree = "<group>"; };
+		D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurgeryRoom.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				4BFC23DC2A38563A00DD26E7 /* StartScene.sks */,
 				4BFC23D22A384AED00DD26E7 /* Assets.xcassets */,
 				4BFC23D42A384AED00DD26E7 /* Preview Content */,
+				D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */,
 			);
 			path = DoodleJump;
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */,
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,
