@@ -42,6 +42,9 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         case rightToLeft
     }
     
+    var moveLeftAction: SKAction!
+    var moveRightAction: SKAction!
+    
     override func didMove(to view: SKView){
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
@@ -99,12 +102,13 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
         
-        makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 120, highestValueY: 300)
+        makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 120, highestValueY: 300)
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 350, highestValueY: 500)
-        makePlatform(lowestValueX: 20, highestValueX: 450, lowestValueY: 550, highestValueY: 700)
+        dynamicPlatform(lowestValueX: 20, highestValueX: 450, lowestValueY: 550, highestValueY: 700)
         makePlatform(lowestValueX: 10, highestValueX: 350, lowestValueY: 750, highestValueY: 950)
         makePlatform(lowestValueX: 5, highestValueX: 450, lowestValueY: 990, highestValueY: 1150)
-        makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1200, highestValueY: 1350)
+        createPlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1200, highestValueY: 1350)
+        startMovingPlatform()
         
         cam.setScale(1.5)
         cam.position.x = player.position.x
@@ -173,10 +177,18 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         motionActivity.startAccelorometerUpdate()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if platform.action(forKey: "movingPlatform") == nil {
+            startMovingPlatform()
+        } else {
+            stopMovingPlatform()
+        }
+    }
+    
     func createPlatform(){
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 1120, highestValueY: 1300)
         makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1350, highestValueY: 1500)
-        makePlatform(lowestValueX: 5, highestValueX: 450, lowestValueY: 1550, highestValueY: 1700)
+        dynamicPlatform(lowestValueX: 5, highestValueX: 450, lowestValueY: 1550, highestValueY: 1700)
         makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1800, highestValueY: 1950)
     }
     
@@ -195,10 +207,75 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         
         addChild(platform)
     }
+    //geraknya gak full dari kiri ke kanan atau sebaliknya
+    func createPlatform(lowestValueX: Int, highestValueX: Int, lowestValueY: Int, highestValueY: Int) {
+        platform = SKSpriteNode(imageNamed: "platform")
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: lowestValueX, highestValue: highestValueX).nextInt(), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueX).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.setScale(0.5)
+        platform.physicsBody = SKPhysicsBody(texture: platform.texture!, size: platform.size)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        addChild(platform)
+        
+        let moveDistance: CGFloat = 200
+        let moveDuration: TimeInterval = 2.0
+        
+        // Move from left to right
+        let moveRight = SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)
+        // Move from right to left
+        let moveLeft = SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration)
+        
+        moveLeftAction = SKAction.sequence([moveRight, moveLeft])
+        moveRightAction = SKAction.sequence([moveLeft, moveRight])
+    }
     
-    func createKnife(){
+    func startMovingPlatform() {
+        let repeatAction = SKAction.repeatForever(moveLeftAction)
+        platform.run(repeatAction)
+    }
+    
+    func stopMovingPlatform() {
+        platform.removeAllActions()
+    }
+    
+    func dynamicPlatform(lowestValueX: Int, highestValueX: Int, lowestValueY: Int, highestValueY: Int) {
+       
+        platform = SKSpriteNode(imageNamed: "platform")
+        platform.position = CGPoint(x: Int(frame.minX), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueX).nextInt() + Int(player.position.y) )
+        platform.zPosition = 5
+        platform.setScale(0.5)
+        platform.physicsBody = SKPhysicsBody(texture: platform.texture!, size: platform.size)
+        platform.physicsBody?.isDynamic = false
+        platform.physicsBody?.allowsRotation = false
+        platform.physicsBody?.affectedByGravity = false
+        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        platform.physicsBody?.collisionBitMask = 0
+        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        addChild(platform)
+        
+        var moveDistance: CGFloat = frame.width
+        let moveDuration: TimeInterval = 2.0
+        
+        // Move from left to right
+        let moveRight = SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)
+        // Move from right to left
+        let moveLeft = SKAction.moveBy(x: -moveDistance , y: 0, duration: moveDuration)
+        
+        moveLeftAction = SKAction.sequence([moveRight, moveLeft])
+        moveRightAction = SKAction.sequence([moveLeft, moveRight])
+        let repeatAction = SKAction.repeatForever(moveLeftAction)
+        
+        platform.run(repeatAction)
+    }
+    
+    func createWeapon(){
         knife = SKSpriteNode(imageNamed: "knife")
-//        knife.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: frame.maxY)
+        //        knife.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: frame.maxY)
         knife.zPosition = 6
     }
     
