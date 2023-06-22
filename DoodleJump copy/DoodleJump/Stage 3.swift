@@ -21,7 +21,7 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
     var score = 0
     var bestScore = 0
     private var platform : SKSpriteNode!
-//    var latestPlatformPoints: CGPoint?
+    //    var latestPlatformPoints: CGPoint?
     var platformHeight = CGFloat()
     
     let cam = SKCameraNode()
@@ -35,6 +35,11 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         case platform = 0b10
         case gameOverLine = 0b100
         case monster = 0b1000
+    }
+    
+    enum PlatformDirection {
+        case leftToRight
+        case rightToLeft
     }
     
     override func didMove(to view: SKView) {
@@ -150,32 +155,32 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
                     createPlatform()
                     addScore()
                 }
-//                addScore()
-//                if((latestPlatformPoints!.y - player.position.y) < player.position.y){
-//                    platformHeight = player.position.y + 20
-//                    createPlatform()
-//
-//                }
+                //                addScore()
+                //                if((latestPlatformPoints!.y - player.position.y) < player.position.y){
+                //                    platformHeight = player.position.y + 20
+                //                    createPlatform()
+                //
+                //                }
                 if score % 4 == 0{
                     var randMonster = random.nextInt()
-                    print(randMonster)
                     if randMonster == 0 {
                         createMonsterHand(imageMonsterName: "tanganKanan1", imagePlatformName: "platform", platformLowestXPosition: 405, platformXHighestPosition: 405, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                         createMonsterHand(imageMonsterName: "tanganKiri1", imagePlatformName: "platform", platformLowestXPosition: 0, platformXHighestPosition: 0, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     } else if randMonster == 1 {
                         createMonsterHand(imageMonsterName: "tanganKanan1", imagePlatformName: "platform", platformLowestXPosition: 405, platformXHighestPosition: 405, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     }else if randMonster == 2 {
-                        createMonsterHand(imageMonsterName: "tanganKanan2", imagePlatformName: "platform", platformLowestXPosition: 405, platformXHighestPosition: 405, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
+                        createMonsterHand(imageMonsterName: "tanganKanan2", imagePlatformName: "platform", platformLowestXPosition: 410, platformXHighestPosition: 410, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     }else if randMonster == 3 {
-                        createMonsterHand(imageMonsterName: "tanganKiri1", imagePlatformName: "platform", platformLowestXPosition: 0, platformXHighestPosition: 0, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
+                        createMonsterHand(imageMonsterName: "tanganKiri1", imagePlatformName: "platform", platformLowestXPosition: -10, platformXHighestPosition: -10, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     }else if randMonster == 4 {
-                        createMonsterHand(imageMonsterName: "tanganKiri2", imagePlatformName: "platform", platformLowestXPosition: 0, platformXHighestPosition: 0, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
+                        createMonsterHand(imageMonsterName: "tanganKiri2", imagePlatformName: "platform", platformLowestXPosition: -10, platformXHighestPosition: -10, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     }
                 }
                 
                 if score % 10 == 0 && score % 4 != 0 {
-                    createMonsterHand(imageMonsterName: "kepalaPasien", imagePlatformName: "platform", platformLowestXPosition: 20, platformXHighestPosition: 300, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
+                    //                    createMonsterHand(imageMonsterName: "kepalaPasien", imagePlatformName: "platform", platformLowestXPosition: 20, platformXHighestPosition: 300, platformLowestYPosition: 1750, platformYHighestPosition: 1900)
                     //scale perlu diubah
+                    dynamicMonster(imageMonsterName: "kepalaPasien", platformLowestXPosition: 0, platformXHighestPosition: 350, platformLowestYPosition: 1200, platformYHighestPosition: 1350)
                 }
             }
         }
@@ -204,8 +209,6 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
     }
     //
     func createPlatform(){
-//        makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 850, highestValueY: 1050)
-//        makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1070, highestValueY: 1100)
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 1120, highestValueY: 1300)
         makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 1350, highestValueY: 1500)
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 1550, highestValueY: 1700)
@@ -225,7 +228,7 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-//        latestPlatformPoints = platform.position
+        //        latestPlatformPoints = platform.position
         
         addChild(platform)
     }
@@ -236,22 +239,22 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         platform = SKSpriteNode(imageNamed: imagePlatformName)
         
         //platform
-//        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: platformLowestXPosition, highestValue: platformXHighestPosition).nextInt(), y: GKRandomDistribution(lowestValue: platformLowestYPosition, highestValue: platformYHighestPosition).nextInt() + Int(player.position.y))
-//        platform.zPosition = 5
-//        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-//        platform.setScale(0.2)
-//        platform.physicsBody?.isDynamic = false
-//        platform.physicsBody?.allowsRotation = false
-//        platform.physicsBody?.affectedByGravity = false
-//        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-//        platform.physicsBody?.collisionBitMask = 0
-//        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-//        addChild(platform)
+        //        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: platformLowestXPosition, highestValue: platformXHighestPosition).nextInt(), y: GKRandomDistribution(lowestValue: platformLowestYPosition, highestValue: platformYHighestPosition).nextInt() + Int(player.position.y))
+        //        platform.zPosition = 5
+        //        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+        //        platform.setScale(0.2)
+        //        platform.physicsBody?.isDynamic = false
+        //        platform.physicsBody?.allowsRotation = false
+        //        platform.physicsBody?.affectedByGravity = false
+        //        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
+        //        platform.physicsBody?.collisionBitMask = 0
+        //        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        //        addChild(platform)
         
         //monster
-//        monster.size = CGSize(width: 200, height: 50)
+        //        monster.size = CGSize(width: 200, height: 50)
         monster.position = CGPoint(x: GKRandomDistribution(lowestValue: platformLowestXPosition, highestValue: platformXHighestPosition).nextInt(), y: GKRandomDistribution(lowestValue: platformLowestYPosition, highestValue: platformYHighestPosition).nextInt() + Int(player.position.y))
-//        monster.position = CGPoint(x: platform.position.x - 20, y: platform.position.y + platform.size.height / 2 )
+        //        monster.position = CGPoint(x: platform.position.x - 20, y: platform.position.y + platform.size.height / 2 )
         monster.zPosition = 10
         monster.physicsBody = SKPhysicsBody(texture: monster.texture!, size: monster.size)
         monster.setScale(0.3)
@@ -262,31 +265,14 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         monster.physicsBody?.collisionBitMask = 0
         monster.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         addChild(monster)
-        
     }
     
-    func monsters() {
-        let monster = SKSpriteNode(imageNamed: "monster")
-        let platform = SKSpriteNode(imageNamed: "platform")
-        
-        // Set up platform
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 0, highestValue: 0).nextInt(), y: GKRandomDistribution(lowestValue: 1350, highestValue: 1550).nextInt() + Int(player.position.y))
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(platform)
-        
-        // Set up monster
-        monster.position = CGPoint(x: platform.position.x - 20, y: platform.position.y + platform.size.height / 2 )
-        monster.zPosition = platform.zPosition + 1 // Place monster above the platform
-        monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size)
-        monster.setScale(0.1)
+    func dynamicMonster(imageMonsterName : String, platformLowestXPosition: Int, platformXHighestPosition: Int, platformLowestYPosition: Int, platformYHighestPosition: Int){
+        monster = SKSpriteNode(imageNamed: imageMonsterName)
+        monster.position = CGPoint(x: GKRandomDistribution(lowestValue: platformLowestXPosition, highestValue: platformXHighestPosition).nextInt(), y: GKRandomDistribution(lowestValue: platformLowestYPosition, highestValue: platformYHighestPosition).nextInt() + Int(player.position.y))
+        monster.zPosition = 10
+        monster.physicsBody = SKPhysicsBody(texture: monster.texture!, size: monster.size)
+        monster.setScale(0.2)
         monster.physicsBody?.isDynamic = false
         monster.physicsBody?.allowsRotation = false
         monster.physicsBody?.affectedByGravity = false
@@ -294,42 +280,32 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         monster.physicsBody?.collisionBitMask = 0
         monster.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         addChild(monster)
+        
+        
+        let direction: PlatformDirection = Bool.random() ? .leftToRight : .rightToLeft
+        
+        if direction == .leftToRight {
+            monster.position.x = frame.minX - monster.size.width / 2
+        } else {
+            monster.position.x = frame.maxX + monster.size.width / 2
+        }
+        
+        let targetX: CGFloat = direction == .leftToRight ? frame.maxX + monster.size.width / 2 : frame.minX - monster.size.width / 2
+        
+        // Calculate duration based on distance and desired speed
+        let distance = abs(targetX - monster.position.x)
+        let speed: CGFloat = 200.0 // Adjust as needed
+        let duration = distance / speed
+        
+        // Move platform
+        let moveAction = SKAction.move(to: CGPoint(x: targetX, y: monster.position.y), duration: TimeInterval(duration))
+        let removeAction = SKAction.removeFromParent()
+        let sequenceAction = SKAction.sequence([moveAction, removeAction])
+        let repeatAction = SKAction.repeatForever(sequenceAction)
+        monster.run(repeatAction)
     }
     
-    func monsterRight() {
-        let monster = SKSpriteNode(imageNamed: "monster1")
-        let platform = SKSpriteNode(imageNamed: "platform")
-        
-        // Set up platform
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 450, highestValue: 450).nextInt(), y: GKRandomDistribution(lowestValue: 1350, highestValue: 1550).nextInt() + Int(player.position.y))
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(platform)
-        
-        // Set up monster
-        monster.position = CGPoint(x: platform.position.x + 40, y: platform.position.y + platform.size.height / 2 )
-        monster.zPosition = platform.zPosition + 1 // Place monster above the platform
-        monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size)
-        monster.setScale(0.1)
-        monster.physicsBody?.isDynamic = false
-        monster.physicsBody?.allowsRotation = false
-        monster.physicsBody?.affectedByGravity = false
-        monster.physicsBody?.categoryBitMask = bitmasks.monster.rawValue
-        monster.physicsBody?.collisionBitMask = 0
-        monster.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(monster)
-    }
-    
-    
-    func gameOver()
-    {
+    func gameOver(){
         let gameOverScene = GameOverScene(size: self.size)
         let transition = SKTransition.crossFade(withDuration: 0.5)
         
