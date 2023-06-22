@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		301F92FB2A433FB2006847F5 /* game_menu.mov in Resources */ = {isa = PBXBuildFile; fileRef = 301F92FA2A433FB2006847F5 /* game_menu.mov */; };
 		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
+		30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AF1B562A44426E00EC6B90 /* StaminaBar.swift */; };
 		4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */; };
 		4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23D02A384AEC00DD26E7 /* ContentView.swift */; };
 		4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D22A384AED00DD26E7 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		301F92FA2A433FB2006847F5 /* game_menu.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = game_menu.mov; path = Assets.xcassets/game_menu.dataset/game_menu.mov; sourceTree = "<group>"; };
 		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		30AF1B562A44426E00EC6B90 /* StaminaBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaminaBar.swift; sourceTree = "<group>"; };
 		4BFC23CB2A384AEC00DD26E7 /* DoodleJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodleJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoodleJumpApp.swift; sourceTree = "<group>"; };
 		4BFC23D02A384AEC00DD26E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				4BFC23D42A384AED00DD26E7 /* Preview Content */,
 				4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */,
 				30444F412A3B06A6000B5350 /* MotionManager.swift */,
+				30AF1B562A44426E00EC6B90 /* StaminaBar.swift */,
 			);
 			path = DoodleJump;
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
+				30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,
 				4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */,

@@ -31,8 +31,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     let cam = SKCameraNode()
     let motionActivity = Motion()
-    
-    var playerArray = [SKTexture]()
+    var timer: Timer?
+    var countdown: Int = -1
+    var doubleJumpIsEnabled = true
+    var staminaBar = StaminaBar()
     
     enum bitmasks : UInt32{
         case player = 0b1
@@ -41,9 +43,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         case gameOverLine
     }
     let containerNode = SKNode()
+    
     override func didMove(to view: SKView) {
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         
         bg1.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bg1.setScale(0.37)
@@ -77,10 +82,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         bg7.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bg7.zPosition = 3
-        bg7.size = CGSize(width: size.width, height: size.height)
+        bg7.size = CGSize(width: size.width + 40, height: size.height)
         addChild(bg7)
         
         physicsWorld.contactDelegate = self
+        
+        staminaBar.getSceneFrame(sceneFrame: frame)
+        staminaBar.buildStaminaBar()
+        addChild(staminaBar)
         
         ground.position = CGPoint(x: size.width / 2 , y: 0)
         ground.zPosition = 5
@@ -114,13 +123,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-        scoreLabel.position.x = 50
-        scoreLabel.zPosition = 20
-        scoreLabel.fontColor = .black
-        scoreLabel.fontSize = 32
+//        scoreLabel.position.x = 50
+        scoreLabel.zPosition = 2001
+        scoreLabel.fontColor = .white
+        scoreLabel.fontSize = 100
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
-        
         
         bestScore = defaults.integer(forKey: "best")
         bestScoreLabel.position.x = 50
@@ -129,7 +137,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bestScoreLabel.fontSize = 32
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
-        
         
         makePlatform()
         makePlatform2()
@@ -164,15 +171,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     override func update(_ currentTime: TimeInterval) {
 //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
-        cam.position.y = player.position.y + 200
-        bg1.position.y = player.position.y +  200
         
+        cam.position.y = player.position.y + 200
+        bg1.position.y = player.position.y + 200
         bg2.position.y = player.position.y + 200
         bg3.position.y = player.position.y + 200
         bg4.position.y = player.position.y + 200
         bg5.position.y = player.position.y + 200
         bg6.position.y = player.position.y + 200
         bg7.position.y = player.position.y + 200
+        staminaBar.updatePosition(playerPos: player.position.y)
         
         if player.physicsBody!.velocity.dy == 1200 {
             player.texture = SKTexture(imageNamed: "idle-front")
@@ -191,9 +199,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             
             player.position.x = newPosition
             bg2.position.x += difference / 11
-            bg3.position.x += difference / 8
+            bg3.position.x += difference / 4
             bg4.position.x += difference / 8
-            bg5.position.x -= difference / 8
+            bg5.position.x -= difference / 10
             bg7.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
@@ -208,13 +216,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     @objc func doubleTapped() {
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
-        makePlatform5()
-        makePlatform6()
-        makePlatform7()
-        makePlatform8()
-        makePlatform9()
-        makePlatform10()
+        if doubleJumpIsEnabled {
+            doubleJumpIsEnabled = false
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
+            makePlatform5()
+            makePlatform6()
+            makePlatform7()
+            makePlatform8()
+            makePlatform9()
+            makePlatform10()
+            countdown = 8
+            staminaBar.decreaseStaminaBar()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.staminaBar.increaseStaminaBar()
+            }
+        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -263,7 +280,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         player.physicsBody?.isDynamic = true
-        if firstTouch == false{
+        if firstTouch == false{ 
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
         }
         firstTouch = true
@@ -436,10 +453,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         addChild(platform)
     }
     
+    @objc func fireTimer() {
+        print(countdown)
+        if countdown == 0 {
+            doubleJumpIsEnabled = true
+        } else if countdown > 0 {
+            countdown -= 1
+        }
+    }
+    
     func gameOver()
     {
         let gameOverScene = GameOverScene(size: self.size)
         let transition = SKTransition.crossFade(withDuration: 0.5)
+        timer!.invalidate()
         
         view?.presentScene(gameOverScene, transition: transition)
         
@@ -454,5 +481,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         score += 1
         scoreLabel.text = "Score: \(score)"
     }
+    
+    
     
 }
