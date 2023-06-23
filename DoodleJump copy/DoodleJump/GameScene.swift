@@ -228,7 +228,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             countdown = 8
             staminaBar.decreaseStaminaBar()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.staminaBar.increaseStaminaBar()
             }
         }

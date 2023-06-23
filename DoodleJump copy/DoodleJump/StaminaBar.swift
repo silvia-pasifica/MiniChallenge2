@@ -53,7 +53,7 @@ class StaminaBar: SKNode {
     }
     
     func decreaseStaminaBar() {
-        staminaBar.run(SKAction.resize(toWidth: CGFloat(0), duration: 1))
+        staminaBar.run(SKAction.resize(toWidth: CGFloat(0), duration: 0.5))
     }
     
     func updatePosition(playerPos: CGFloat) {
