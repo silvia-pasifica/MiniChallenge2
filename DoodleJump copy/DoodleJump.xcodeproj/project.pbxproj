@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		300F796B2A458DC000C9D083 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300F796A2A458DC000C9D083 /* AudioPlayer.swift */; };
-		301F92FB2A433FB2006847F5 /* game_menu.mov in Resources */ = {isa = PBXBuildFile; fileRef = 301F92FA2A433FB2006847F5 /* game_menu.mov */; };
 		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
 		30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AF1B562A44426E00EC6B90 /* StaminaBar.swift */; };
+		30FF2CCE2A48718C0075735F /* game_menu.mov in Resources */ = {isa = PBXBuildFile; fileRef = 30FF2CCD2A48718C0075735F /* game_menu.mov */; };
 		4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */; };
 		4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23D02A384AEC00DD26E7 /* ContentView.swift */; };
 		4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D22A384AED00DD26E7 /* Assets.xcassets */; };
@@ -22,9 +22,9 @@
 
 /* Begin PBXFileReference section */
 		300F796A2A458DC000C9D083 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
-		301F92FA2A433FB2006847F5 /* game_menu.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = game_menu.mov; path = Assets.xcassets/game_menu.dataset/game_menu.mov; sourceTree = "<group>"; };
 		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		30AF1B562A44426E00EC6B90 /* StaminaBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaminaBar.swift; sourceTree = "<group>"; };
+		30FF2CCD2A48718C0075735F /* game_menu.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = game_menu.mov; sourceTree = "<group>"; };
 		4BFC23CB2A384AEC00DD26E7 /* DoodleJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodleJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoodleJumpApp.swift; sourceTree = "<group>"; };
 		4BFC23D02A384AEC00DD26E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 		4BFC23CD2A384AEC00DD26E7 /* DoodleJump */ = {
 			isa = PBXGroup;
 			children = (
-				301F92FA2A433FB2006847F5 /* game_menu.mov */,
+				30FF2CCD2A48718C0075735F /* game_menu.mov */,
 				4BFC23DE2A385EE700DD26E7 /* GameScene.swift */,
 				4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */,
 				4BFC23D02A384AEC00DD26E7 /* ContentView.swift */,
@@ -149,7 +149,7 @@
 				4BFC23DD2A38563B00DD26E7 /* StartScene.sks in Resources */,
 				4BFC23D62A384AED00DD26E7 /* Preview Assets.xcassets in Resources */,
 				4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */,
-				301F92FB2A433FB2006847F5 /* game_menu.mov in Resources */,
+				30FF2CCE2A48718C0075735F /* game_menu.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

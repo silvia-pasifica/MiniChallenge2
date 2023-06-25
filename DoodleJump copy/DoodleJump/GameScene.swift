@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate{
     let bg1 = SKSpriteNode(imageNamed: "bg1")
     let player = SKSpriteNode(imageNamed: "idle-front")
-    let ground = SKSpriteNode(imageNamed: "platformBiasa")
+    let ground = SKSpriteNode(imageNamed: "platform")
     let bg2 = SKSpriteNode(imageNamed: "bg2")
     let bg3 = SKSpriteNode(imageNamed: "bg3")
     let bg4 = SKSpriteNode(imageNamed: "bg4")
@@ -35,6 +35,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var countdown: Int = -1
     var doubleJumpIsEnabled = true
     var staminaBar = StaminaBar()
+    var facing = "front"
+    
+    let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
+    let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
     
     enum bitmasks : UInt32{
         case player = 0b1
@@ -205,11 +209,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             bg7.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
-                player.texture = SKTexture(imageNamed: "jump-front")
+                if facing != "front" {
+                    facing = "front"
+                    player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
+                }
             } else if player.position.x < 150 {
-                player.texture = SKTexture(imageNamed: "jump-left")
+                if facing != "left" {
+                    facing = "left"
+                    player.texture = SKTexture(imageNamed: "jump-left")
+                }
             } else {
-                player.texture = SKTexture(imageNamed: "jump-right")
+                if facing != "right" {
+                    facing = "right"
+                    player.texture = textureArrayRight[0]
+                    player.run(SKAction.setTexture(textureArrayRight[0], resize: true))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayRight, timePerFrame: 0.1)))
+                }
             }
         }
         containerNode.position = player.position
