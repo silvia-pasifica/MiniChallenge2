@@ -19,8 +19,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let bg5 = SKSpriteNode(imageNamed: "bg5")
     let bg6 = SKSpriteNode(imageNamed: "bg6")
     let bg7 = SKSpriteNode(imageNamed: "bg7")
-    
-    let lamp = SKSpriteNode(imageNamed: "lamp")
+    let bg8 = SKSpriteNode(imageNamed: "bg8")
+    let bg9 = SKSpriteNode(imageNamed: "bg9")
+    var lampSpawnTimer: Timer?
+    let circleNode = SKShapeNode(circleOfRadius: 500)
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
@@ -28,17 +30,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let defaults = UserDefaults.standard
     var score = 0
     var bestScore = 0
+    var particlePlatform : SKEmitterNode = SKEmitterNode(fileNamed: "smoke")!
     
     let cam = SKCameraNode()
     let motionActivity = Motion()
     
     var playerArray = [SKTexture]()
     
+    private var lamp: SKSpriteNode!
     enum bitmasks : UInt32{
         case player = 0b1
         case platform = 0b10
-        case lamp = 0b11
-        case gameOverLine
+        case lamp = 0b100
+        case gameOverLine = 0b1000
     }
     let containerNode = SKNode()
     override func didMove(to view: SKView) {
@@ -80,6 +84,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg7.setScale(0.37)
         addChild(bg7)
         
+        bg8.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg8.zPosition = 3
+        bg8.setScale(0.4)
+        addChild(bg8)
+        
+        bg9.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg9.zPosition = 3
+        bg9.setScale(0.4)
+        addChild(bg9)
+        
         physicsWorld.contactDelegate = self
         
         ground.position = CGPoint(x: size.width / 2 , y: 0)
@@ -102,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         player.physicsBody?.categoryBitMask = bitmasks.player.rawValue
         player.physicsBody?.collisionBitMask = 0
-        player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.gameOverLine.rawValue | bitmasks.lamp.rawValue
+        player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.gameOverLine.rawValue
         addChild(player)
         
         gameOverLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
@@ -147,15 +161,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         cam.position.x = player.position.x
         camera = cam
         
-        let circleSize: CGFloat = 500
-        
-        // Membuat wadah node
         
         containerNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         containerNode.zPosition = 25
         addChild(containerNode)
         // Membuat lingkaran node
-        let circleNode = SKShapeNode(circleOfRadius: circleSize)
+        
         circleNode.fillColor = SKColor.clear
         // Menambahkan bayangan luar
         circleNode.lineWidth = 550.0
@@ -178,6 +189,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg5.position.y = player.position.y + 200
         bg6.position.y = player.position.y + 200
         bg7.position.y = player.position.y + 200
+        bg8.position.y = player.position.y + 200
+        bg9.position.y = player.position.y + 200
         
         if player.physicsBody!.velocity.dy == 1200 {
             player.texture = SKTexture(imageNamed: "1")
@@ -197,7 +210,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             player.position.x = newPosition
             tree.position.x = size.width / 2 - newPosition / 13
             bg4.position.x = size.width / 2 - newPosition / 14
-            bg7.position.x = size.width / 2 - newPosition / 20
+            bg7.position.x = size.width / 2 - newPosition / 24
             
             if player.position.x >= 150 && player.position.x <= 240 {
                 player.texture = SKTexture(imageNamed: "bunny")
@@ -246,8 +259,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
                 contactB.node?.removeFromParent()
-//                player.texture = SKTexture(imageNamed: "bunny")
-//                player.run(SKAction.animate(with: playerArray, timePerFrame: 0.5))
+                
                 makePlatform5()
                 makePlatform6()
                 addScore()
@@ -257,17 +269,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.gameOverLine.rawValue{
             gameOver()
         }
+        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.lamp.rawValue{
+            glowArea()
+            contactB.node?.removeFromParent()
+        }
     }
     
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for touch in touches{
-//            let location = touch.location(in: self)
-//
-//            player.position.x = location.x
-//
-//        }
-//    }
-    
+    func glowArea(){
+        let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0) // Mengubah alpha menjadi 0.3 dalam waktu 10 detik
+            let fadeInAction = SKAction.fadeAlpha(to: 0.857, duration: 10.00) // Mengubah alpha menjadi 0.875 dalam waktu 0.5 detik
+            let sequenceAction = SKAction.sequence([fadeOutAction, fadeInAction]) // Menjalankan animasi fadeOutAction dan fadeInAction secara berurutan
+            
+            circleNode.run(sequenceAction)
+    }
     
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -359,11 +373,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         addChild(platform)
         
-//        
-//        lamp.position = CGPoint(x: lamp.position.x, y: lamp.position.y + 5)
-//        lamp.zPosition = 5
-//        lamp.setScale(0.1)
-//        addChild(lamp)
+        let randomChance = Int(arc4random_uniform(50))
+        if randomChance == 5{
+            let lamp = SKSpriteNode(imageNamed: "lamp")
+            lamp.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
+            lamp.zPosition = platform.zPosition + 1
+            lamp.physicsBody = SKPhysicsBody(rectangleOf: lamp.size)
+            lamp.setScale(0.1)
+            lamp.physicsBody?.isDynamic = false
+            lamp.physicsBody?.allowsRotation = false
+            lamp.physicsBody?.affectedByGravity = false
+            lamp.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
+            lamp.physicsBody?.collisionBitMask = 0
+            lamp.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+            
+            addChild(lamp)
+            
+        }
         
     }
     func makePlatform6(){
