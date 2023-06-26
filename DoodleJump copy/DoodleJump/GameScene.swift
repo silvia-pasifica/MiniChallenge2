@@ -43,6 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
+    let textureArrayLeft = [SKTexture(imageNamed: "jump-left-1"), SKTexture(imageNamed: "jump-left-2"), SKTexture(imageNamed: "jump-left-3")]
     
     private var lamp: SKSpriteNode!
     enum bitmasks : UInt32{
@@ -230,7 +231,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             } else if player.position.x < 150 {
                 if facing != "left" {
                     facing = "left"
-                    player.texture = SKTexture(imageNamed: "jump-left")
+                    player.run(SKAction.setTexture(textureArrayLeft[0], resize: true))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayLeft, timePerFrame: 0.1)))
                 }
             } else {
                 if facing != "right" {
@@ -328,6 +330,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         firstTouch = true
         motionActivity.startAccelorometerUpdate()
         
+        player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
+        player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
     }
     
     func makePlatform(){
