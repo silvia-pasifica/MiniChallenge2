@@ -21,6 +21,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
     var firstTouch = false
     let scoreLabel = SKLabelNode()
     let bestScoreLabel = SKLabelNode()
+    let objectsContainer = SKNode()
     let defaults = UserDefaults.standard
     var score = 0
     var bestScore = 0
@@ -29,6 +30,8 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     let motionActivity = Motion()
     let random = GKRandomDistribution(lowestValue: 0, highestValue: 4)
+    
+   
     
     enum bitmasks : UInt32{
         case player = 0b1
@@ -108,6 +111,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         addChild(bestScoreLabel)
         
         monsterOnTop()
+        
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 120, highestValueY: 300)
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 350, highestValueY: 500)
         dynamicPlatform(lowestValueX: 20, highestValueX: 450, lowestValueY: 550, highestValueY: 700)
@@ -120,6 +124,14 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         cam.setScale(1.5)
         cam.position.x = player.position.x
         camera = cam
+        addChild(cam)
+        objectsContainer.position.x = player.position.x
+        addChild(objectsContainer)
+
+    }
+    
+    override func didSimulatePhysics() {
+        objectsContainer.position = CGPoint(x: -cam.position.x, y: -cam.position.y)
     }
     
     override func update(_ currentTime: TimeInterval){
@@ -130,7 +142,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         if player.physicsBody!.velocity.dy > 0 {
             gameOverLine.position.y = player.position.y - 600
         }
-
+        monsterTop.position.y = player.position.y + 800
         scoreLabel.position.y = player.position.y + 700
         bestScoreLabel.position.y = player.position.y + 650
         
@@ -161,7 +173,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
                 } else {
                     player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 800)
                 }
-
+               
                 if(platformHeight < player.position.y && score != 100){
                     platformHeight = player.position.y + 20
                     if score <= 20 {
@@ -207,6 +219,8 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
                 }
                 if score % 2 == 0 {
                     monsterOnTop()
+                    
+                    print("berjalan")
                     
                 }
             }
@@ -353,6 +367,8 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         addChild(platform)
     }
     
+    
+    
     func createWeapon(){
         knife = SKSpriteNode(imageNamed: "knife")
 //
@@ -431,7 +447,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         monsterTop.zPosition = 11
         let cameraPositionInScene = self.convert(cam.position, from: self)
         monsterTop.setScale(0.5)
-        monsterTop.position = CGPoint(x: cameraPositionInScene.x + 200, y: cameraPositionInScene.y + 700)
+        monsterTop.position = CGPoint(x: frame.midX + 200, y: player.position.y + 1800)
         
         monsterTop.physicsBody = SKPhysicsBody(texture: monsterTop.texture!, size: monsterTop.size)
         monsterTop.physicsBody?.isDynamic = false
@@ -440,30 +456,40 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         monsterTop.physicsBody?.categoryBitMask = bitmasks.monsterOnTop.rawValue
         monsterTop.physicsBody?.collisionBitMask = 0
         monsterTop.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(monsterTop)
+        objectsContainer.addChild(monsterTop) 
         
-        let targetY: CGFloat = cameraPositionInScene.y  + 500
-        
+        let targetY: CGFloat = player.position.y  + 1800
+        let resetX: CGFloat = frame.midX + 200
+        let resetY: CGFloat = player.position.y + 1800
         // Calculate duration based on distance and desired speed
         let distance = abs(targetY - 4 * monsterTop.position.y)
         let speed: CGFloat = 3500.0 // Adjust as needed
         let duration = distance / speed
-        var resetPositionX: Int
        
         // Move platform
-        let moveAction = SKAction.move(to: CGPoint(x: cameraPositionInScene.x + 200, y: targetY), duration: TimeInterval(duration))
+        let moveAction = SKAction.move(to: CGPoint(x: frame.midX + 200, y: targetY), duration: TimeInterval(duration))
         let resetPositionAction = SKAction.run { [weak self] in
-            self?.monsterTop.position = CGPoint(x: cameraPositionInScene.x + 200, y: cameraPositionInScene.y + 700)
+            self?.monsterTop.position = CGPoint(x:resetX , y: resetY)
         }
         let delayAction = SKAction.wait(forDuration: 0.3)
         let sequenceAction = SKAction.sequence([moveAction, delayAction, resetPositionAction])
         let repeatAction = SKAction.repeatForever(sequenceAction)
-        
         monsterTop.run(repeatAction)
 //        run(SKAction.repeatForever(SKAction.sequence([
 //                    SKAction.run(createWeapon),
 //                    SKAction.wait(forDuration: 1.0)
 //                ])))
+       
+        stopAndRemoveMonsterTop()
+    }
+    func stopAndRemoveMonsterTop() {
+        
+        let removeAction = SKAction.removeFromParent()
+        let delayAction = SKAction.wait(forDuration: 3.0) // Penundaan selama 0.5 detik
+        let sequenceAction = SKAction.sequence([delayAction, removeAction])
+        monsterTop.run(sequenceAction) // Menjalankan aksi dengan penundaan
+//        monsterTop.removeAllActions() // Menghentikan aksi berulang
+        
     }
     
     
