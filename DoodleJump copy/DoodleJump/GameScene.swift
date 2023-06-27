@@ -30,19 +30,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let defaults = UserDefaults.standard
     var score = 0
     var bestScore = 0
-    var particlePlatform : SKEmitterNode = SKEmitterNode(fileNamed: "smoke")!
-    
     let cam = SKCameraNode()
     let motionActivity = Motion()
     
     var playerArray = [SKTexture]()
     
     private var lamp: SKSpriteNode!
+    var radialNodes: [SKSpriteNode] = []
+    var currentRadialIndex = 0
+    var glow = false
     enum bitmasks : UInt32{
         case player = 0b1
         case platform = 0b10
         case lamp = 0b100
         case gameOverLine = 0b1000
+        case particlePlatform = 0b10000
     }
     let containerNode = SKNode()
     override func didMove(to view: SKView) {
@@ -177,7 +179,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
        
         // Menambahkan lingkaran node ke dalam wadah node
         containerNode.addChild(circleNode)
+        
+        for i in 1...9 {
+            let radialTexture = SKTexture(imageNamed: "Radial\(i)")
+            let radialNode = SKSpriteNode(texture: radialTexture)
+            radialNode.position = CGPoint(x: player.position.x, y: player.position.y)
+            radialNode.alpha = 0
+            radialNode.zPosition = 9
+            addChild(radialNode)
+            radialNodes.append(radialNode)
+        }
+        
+        if glow {
+            showNextRadial()
+        }
+        
+        
     }
+    func showNextRadial() {
+        let fadeInDuration: TimeInterval = 0.2
+        let fadeOutDuration: TimeInterval = 0.1
+        
+        let radialNode = radialNodes[currentRadialIndex]
+        currentRadialIndex = (currentRadialIndex + 1) % radialNodes.count
+        
+        let fadeInAction = SKAction.fadeIn(withDuration: fadeInDuration)
+        let fadeOutAction = SKAction.fadeOut(withDuration: fadeOutDuration)
+        let waitAction = SKAction.wait(forDuration: fadeOutDuration)
+        
+        let sequenceAction = SKAction.sequence([fadeInAction, waitAction, fadeOutAction])
+        
+        radialNode.run(sequenceAction) { [self] in
+            if self.currentRadialIndex != 0 {
+                self.showNextRadial()
+            }
+            else{
+                glow = false
+            }
+        }
+        
+    }
+   
     override func update(_ currentTime: TimeInterval) {
 //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
         cam.position.y = player.position.y + 200
@@ -191,6 +233,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg7.position.y = player.position.y + 200
         bg8.position.y = player.position.y + 200
         bg9.position.y = player.position.y + 200
+        
+        for (index, radialNode) in radialNodes.enumerated() {
+                radialNode.position = player.position
+            }
         
         if player.physicsBody!.velocity.dy == 1200 {
             player.texture = SKTexture(imageNamed: "1")
@@ -213,7 +259,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             bg7.position.x = size.width / 2 - newPosition / 24
             
             if player.position.x >= 150 && player.position.x <= 240 {
-                player.texture = SKTexture(imageNamed: "bunny")
+                player.texture = SKTexture(imageNamed: "iris")
             } else if player.position.x < 150 {
                 player.texture = SKTexture(imageNamed: "2")
             } else {
@@ -236,6 +282,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func didBegin(_ contact: SKPhysicsContact) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        let particlePlatform = SKEmitterNode(fileNamed: "smoke")
         tap.numberOfTapsRequired = 2
         view!.addGestureRecognizer(tap)
         
@@ -263,7 +310,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 makePlatform5()
                 makePlatform6()
                 addScore()
+                
+                particlePlatform!.zPosition = 6
+                particlePlatform!.position = CGPoint(x: player.position.x, y: player.position.y)
+                particlePlatform!.setScale(0.8)
+                particlePlatform!.physicsBody?.isDynamic = false
+                particlePlatform!.physicsBody?.allowsRotation = false
+                particlePlatform!.physicsBody?.affectedByGravity = false
+                particlePlatform!.physicsBody?.categoryBitMask = bitmasks.particlePlatform.rawValue
+                particlePlatform!.physicsBody?.collisionBitMask = 0
+                particlePlatform!.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+                let smokeFade = SKAction.fadeOut(withDuration: 1.0)
+                particlePlatform!.alpha = 0.2
+                
+                addChild(particlePlatform!)
+                particlePlatform!.run(SKAction.sequence([smokeFade, .removeFromParent()]))
+                
             }
+            
         }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.gameOverLine.rawValue{
@@ -276,11 +340,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func glowArea(){
-        let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0) // Mengubah alpha menjadi 0.3 dalam waktu 10 detik
-            let fadeInAction = SKAction.fadeAlpha(to: 0.857, duration: 10.00) // Mengubah alpha menjadi 0.875 dalam waktu 0.5 detik
-            let sequenceAction = SKAction.sequence([fadeOutAction, fadeInAction]) // Menjalankan animasi fadeOutAction dan fadeInAction secara berurutan
+        let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0)
+        let fadeInAction = SKAction.fadeAlpha(to: 0.857, duration: 10.00)
+        let sequenceAction = SKAction.sequence([fadeOutAction, fadeInAction])
+        
+        circleNode.run(sequenceAction)
+        glow = true
+        showNextRadial()
             
-            circleNode.run(sequenceAction)
+        
     }
     
     
@@ -373,7 +441,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         addChild(platform)
         
-        let randomChance = Int(arc4random_uniform(50))
+        let randomChance = Int(arc4random_uniform(7))
         if randomChance == 5{
             let lamp = SKSpriteNode(imageNamed: "lamp")
             lamp.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
