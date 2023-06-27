@@ -13,7 +13,7 @@
 		4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D22A384AED00DD26E7 /* Assets.xcassets */; };
 		4BFC23D62A384AED00DD26E7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D52A384AED00DD26E7 /* Preview Assets.xcassets */; };
 		4BFC23DD2A38563B00DD26E7 /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23DC2A38563A00DD26E7 /* StartScene.sks */; };
-		4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23DE2A385EE700DD26E7 /* GameScene.swift */; };
+		4BFC23DF2A385EE700DD26E7 /* AsylumCafetaria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23DE2A385EE700DD26E7 /* AsylumCafetaria.swift */; };
 		4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */; };
 		D55952BB2A3C3D020001C94A /* Stage 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BA2A3C3D020001C94A /* Stage 3.swift */; };
 		D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */; };
@@ -27,7 +27,7 @@
 		4BFC23D22A384AED00DD26E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BFC23D52A384AED00DD26E7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4BFC23DC2A38563A00DD26E7 /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
-		4BFC23DE2A385EE700DD26E7 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		4BFC23DE2A385EE700DD26E7 /* AsylumCafetaria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsylumCafetaria.swift; sourceTree = "<group>"; };
 		4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		D55952BA2A3C3D020001C94A /* Stage 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stage 3.swift"; sourceTree = "<group>"; };
 		D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurgeryRoom.swift; sourceTree = "<group>"; };
@@ -63,6 +63,7 @@
 		4BFC23CD2A384AEC00DD26E7 /* DoodleJump */ = {
 			isa = PBXGroup;
 			children = (
+				4BFC23DE2A385EE700DD26E7 /* AsylumCafetaria.swift */,
 				4BFC23DE2A385EE700DD26E7 /* GameScene.swift */,
 				D55952BA2A3C3D020001C94A /* Stage 3.swift */,
 				4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */,
@@ -156,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BFC23DF2A385EE700DD26E7 /* AsylumCafetaria.swift in Sources */,
 				D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */,
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
@@ -291,6 +293,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DoodleJump/Preview Content\"";
+				DEVELOPMENT_TEAM = 2X39DN22DV;
 				DEVELOPMENT_TEAM = PM68VG5TVC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -320,6 +323,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DoodleJump/Preview Content\"";
+				DEVELOPMENT_TEAM = 2X39DN22DV;
 				DEVELOPMENT_TEAM = PM68VG5TVC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
