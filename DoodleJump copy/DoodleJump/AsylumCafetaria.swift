@@ -9,11 +9,15 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate{
+class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
+    let rotationDuration: TimeInterval = 0.5 // Duration for the rotation animation
+    let rotationAngle: CGFloat = .pi * 2 // Rotation angle in radians (90 degrees)
+    let launchDelay: TimeInterval = 1.0 // Delay before launching the knife
     let background = SKSpriteNode(imageNamed: "background")
     let player = SKSpriteNode(imageNamed: "bunny")
     let ground = SKSpriteNode(imageNamed: "ground_grass")
     let monster = SKSpriteNode(imageNamed: "monster")
+    var knife = SKSpriteNode(imageNamed: "knife")
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
@@ -24,14 +28,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     let motionActivity = Motion()
     var platformheight = CGFloat()
+    var playercurrX = CGFloat()
+    var randomKnife = 0
+    var randomPlatform = 0
+    var sticky = 0
+    var ctrknife = 0
     enum bitmasks : UInt32{
-        case player = 0b1
-        case platform = 0b10
+        case player
+        case platform
+        case knife
         case gameOverLine
         case monster
     }
     
     override func didMove(to view: SKView) {
+        physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
         
@@ -56,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
         player.physicsBody?.isDynamic = false
         player.physicsBody?.restitution = 1
-        player.physicsBody?.friction = 0
+        player.physicsBody?.friction = 100
         player.physicsBody?.angularDamping = 0
         
         player.physicsBody?.categoryBitMask = bitmasks.player.rawValue
@@ -64,19 +75,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.gameOverLine.rawValue
         addChild(player)
         
-        monster.position = CGPoint(x: player.position.x, y: player.position.y - 150)
+        monster.position = CGPoint(x: player.position.x, y: player.position.y - 1000)
         monster.zPosition = 10
         monster.setScale(0.20)
         monster.physicsBody = SKPhysicsBody(circleOfRadius: monster.size.height / 2)
         monster.physicsBody?.isDynamic = false
-        monster.physicsBody?.restitution = 1
+        monster.physicsBody?.restitution = 0
         monster.physicsBody?.friction = 0
         monster.physicsBody?.angularDamping = 0
         monster.physicsBody?.categoryBitMask = bitmasks.monster.rawValue
-        monster.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
+        monster.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         addChild(monster)
         
-        gameOverLine.position = CGPoint(x: player.position.x, y: player.position.y - 200)
+        gameOverLine.position = CGPoint(x: player.position.x, y: cam.position.y - 400)
         gameOverLine.zPosition = -1
         gameOverLine.physicsBody = SKPhysicsBody(rectangleOf: gameOverLine.size)
         gameOverLine.physicsBody?.affectedByGravity = false
@@ -100,14 +111,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bestScoreLabel.fontSize = 32
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
-        
-        
         makePlatform()
         makePlatform2()
         makePlatform3()
         makePlatform4()
-        makePlatform5()
-        makePlatform6()
+        makePlatform5(name: "", img: "ground_grass_broken")
+        makePlatform6(name: "", img: "ground_grass_broken")
         
         
         cam.setScale(1.5)
@@ -117,29 +126,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     override func update(_ currentTime: TimeInterval) {
-//        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
-        cam.position.y = player.position.y + 200
-        background.position.y = player.position.y +  200
-        background.setScale(1.5)
-        
-        if player.physicsBody!.velocity.dy > 0 {
-            gameOverLine.position.y = player.position.y - 600 //remove the platform
-            
-            
+        //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
+        gameOverLine.position.y = cam.position.y - 700
+        let camIncrementPerSecond: CGFloat = 0.5
+        let knifeIncrementPerSecond: CGFloat = 20
+        if(firstTouch == true){
+            cam.position.y += camIncrementPerSecond
         }
-        if player.position.y - monster.position.y < 600 {
+        if(randomKnife != 2 && randomKnife != -1){
+            knife.position.y += knifeIncrementPerSecond
+        }else if(randomKnife == -1){
+            knife.position.y = cam.position.y - 400
+        }
+        background.setScale(1.5)
+        if cam.position.y - player.position.y < 50{
+            cam.position.y = player.position.y + 50
+            background.position.y = player.position.y +  50
+            scoreLabel.position.y = player.position.y + 650
+            bestScoreLabel.position.y = player.position.y + 600
+        }else{
+        }
+        //        if player.physicsBody!.velocity.dy > 0 {
+        //            gameOverLine.position.y = player.position.y - 600 //remove the platform
+        //
+        //        }
+        if player.position.y - monster.position.y < 1000 {
             
         }else{
-            monster.position.y = player.position.y - 600
+            monster.position.y = player.position.y - 1000
         }
-//        if player.physicsBody!.velocity.dy < 0{
-//
-//        }else{
-//            monster.position.y = player.position.y - 400
-//        }
+        //        if player.physicsBody!.velocity.dy < 0{
+        //
+        //        }else{
+        //            monster.position.y = player.position.y - 400
+        //        }
         monster.position.x = player.position.x
-        scoreLabel.position.y = player.position.y + 700
-        bestScoreLabel.position.y = player.position.y + 650
         
         var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
@@ -166,16 +187,62 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.platform.rawValue{
-            if player.physicsBody!.velocity.dy < 0 {
-                monster.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 400)
-                player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
-                if(platformheight < player.position.y){
-                    platformheight = player.position.y + 20
-                    makePlatform5()
-                    makePlatform6()
-                    addScore()
+            if let sticky = contactB.node?.userData?["sticky"] as? Bool {
+                if player.physicsBody!.velocity.dy < 0 {
+                    if(ctrknife != 3){
+                        ctrknife += 1
+                    }else if(ctrknife == -1){
+                        
+                    }else{
+                        randomKnife = Int.random(in: 1...2)
+                    }
+                    monster.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 400)
+                    if let platform = contactB.node as? SKSpriteNode, platform.name == "sticky" {
+                        player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 600)
+                    }else{
+                        player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
+                        if let platform = contactB.node as? SKSpriteNode, platform.name == "crack"{
+                            let changeImageAction = SKAction.setTexture(SKTexture(imageNamed: "ground_grass_broken"))
+                            let dropAction = SKAction.moveBy(x: 0, y: -50, duration: 0.1)
+                           
+                            let sequenceAction = SKAction.sequence([changeImageAction, dropAction])
+                            platform.run(sequenceAction){
+                                contactB.node?.removeFromParent()
+                            }
+                        }
+                    }
+                    if(platformheight < player.position.y){
+                        platformheight = player.position.y + 20
+                        randomPlatform = Int.random(in: 1...11)
+                        if(randomPlatform < 4){
+                            makePlatform5(name: "crack", img: "ground_grass")
+                            makePlatform6(name: "", img: "ground_grass_broken")
+                        }else if(randomPlatform == 4){
+                            makePlatform5(name: "crack", img: "ground_grass")
+                            makePlatform6(name: "", img: "ground_grass_broken")
+//                            makePlatform5(name: "sticky", img: "ground_grass")
+//                            makePlatform6(name: "", img: "ground_grass_broken")
+                        }else if(randomPlatform == 5){
+                            makePlatform5(name: "crack", img: "ground_grass")
+                            makePlatform6(name: "", img: "ground_grass_broken")
+//                            makePlatform5(name: "", img: "ground_grass_broken")
+//                            makePlatform6(name: "sticky", img: "ground_grass")
+                        }
+                        else{
+                            makePlatform5(name: "", img: "ground_grass_broken")
+                            makePlatform6(name: "", img: "ground_grass_broken")
+                        }
+                        addScore()
+                    }
                 }
             }
+        }
+        if(randomKnife == 2){
+            playercurrX = player.position.x
+            knife.removeFromParent()
+            makeKnife()
+            randomKnife = -1
+            ctrknife = -1
         }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.gameOverLine.rawValue{
@@ -184,21 +251,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.monster.rawValue{
             gameOver()
         }
+//        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.knife.rawValue{
+//            gameOver()
+//        }
     }
     
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for touch in touches{
-//            let location = touch.location(in: self)
-//
-//            player.position.x = location.x
-//
-//        }
-//    }
+    //    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //        for touch in touches{
+    //            let location = touch.location(in: self)
+    //
+    //            player.position.x = location.x
+    //
+    //        }
+    //    }
     
     
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-
+        
         player.physicsBody?.isDynamic = true
         if firstTouch == false{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
@@ -207,23 +277,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         motionActivity.startAccelorometerUpdate()
         
     }
-    func shootBall() {
-        let ballNode = SKShapeNode(circleOfRadius: 10.0)
-        ballNode.fillColor = .red
-        ballNode.position = CGPoint(x: frame.midX, y: frame.minY)
-        addChild(ballNode)
-
-        let shoot = SKAction.moveBy(x: 0.0, y: 100.0, duration: 1.0) // Adjust the y value as needed
-        let sequence = SKAction.sequence([shoot, SKAction.removeFromParent()])
-        ballNode.run(sequence)
-
-        let delay = SKAction.wait(forDuration: 2.0)
-        let shootAgain = SKAction.run {
-            self.shootBall() // Recursive call to shoot the ball again after a delay
-        }
-        let repeatAction = SKAction.sequence([delay, shootAgain])
-        run(repeatAction)
+    func makeKnife(){
+        knife = SKSpriteNode(imageNamed: "knife")
+        knife.position = CGPoint(x: playercurrX, y: cam.position.y - 500)
+        knife.zPosition = 10
+        knife.setScale(0.20)
+        knife.physicsBody = SKPhysicsBody(circleOfRadius: knife.size.height / 2)
+        knife.physicsBody?.isDynamic = false
+        knife.physicsBody?.restitution = 0
+        knife.physicsBody?.friction = 0
+        knife.physicsBody?.angularDamping = 0
+        
+        knife.physicsBody?.categoryBitMask = bitmasks.knife.rawValue
+        knife.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        addChild(knife)
+        // Apply rotation animation
+            let rotateAction = SKAction.rotate(byAngle: rotationAngle, duration: rotationDuration)
+            // Apply delay before launching the knife
+            let delayAction = SKAction.wait(forDuration: launchDelay)
+            // Combine rotation and delay actions
+            let sequenceAction = SKAction.sequence([rotateAction, delayAction])
+            // Run the sequence of actions on the knife node
+            knife.run(sequenceAction) {
+                self.randomKnife = 0
+                self.ctrknife = 0
+                // This closure is called after the rotation and delay actions have completed
+                // Add code here to launch the knife or perform any other desired actions
+            }
     }
+    
     func makePlatform(){
         let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 140, highestValue: 300).nextInt() + Int(player.position.y) )
@@ -237,6 +320,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
@@ -252,6 +336,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
@@ -267,6 +352,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
@@ -282,11 +368,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
-    func makePlatform5(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+    func makePlatform5(name: String, img: String){
+        let platform = SKSpriteNode(imageNamed: img)
+        platform.name = name
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1100, highestValue: 1300).nextInt() + Int(player.position.y) )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
@@ -297,11 +385,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
-    func makePlatform6(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
+    func makePlatform6(name: String, img: String){
+        let platform = SKSpriteNode(imageNamed: img)
+        platform.name = name
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1350, highestValue: 1550).nextInt() + Int(player.position.y) )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
@@ -312,27 +402,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        platform.userData = ["sticky": sticky]
         
         addChild(platform)
     }
-    
-//    func makePlatform2(){
-//
-//        let platform2 = SKSpriteNode(imageNamed: "ground_grass_broken")
-//        platform2.position = CGPoint(x: size.width / 2, y : size.height / 4 + player.position.y)
-//        platform2.zPosition = 5
-//        platform2.physicsBody = SKPhysicsBody(rectangleOf: platform2.size)
-//        platform2.setScale(0.2)
-//
-//        platform2.physicsBody?.isDynamic = false
-//        platform2.physicsBody?.allowsRotation = false
-//        platform2.physicsBody?.affectedByGravity = false
-//        platform2.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-//        platform2.physicsBody?.collisionBitMask = 0
-//        platform2.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-//
-//        addChild(platform2)
-//    }
     
     func gameOver()
     {

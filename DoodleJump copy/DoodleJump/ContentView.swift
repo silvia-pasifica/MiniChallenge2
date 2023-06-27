@@ -20,7 +20,7 @@ class StartScene: SKScene{
             
             if startNode.name == "startButton"
             {
-                let game = GameScene(size: self.size)
+                let game = AsylumCafetaria(size: self.size)
                 let transition = SKTransition.doorway(withDuration: 3)
                 self.view?.presentScene(game, transition: transition)
             }
