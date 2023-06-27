@@ -32,14 +32,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var score = 0
     var bestScore = 0
     var particlePlatform : SKEmitterNode = SKEmitterNode(fileNamed: "smoke")!
+    let howToPlayLabel = SKLabelNode()
+    let handTapLabel = SKSpriteNode(imageNamed: "hand-tap")
+    var tutorials = ["Tilt to Move", "Grab The Lamps", "Double Tap to Jump Higher"]
+    var platformCount = 0
+    
+    var glow = false
+    var radialNodes: [SKSpriteNode] = []
+    var currentRadialIndex = 0
     
     let cam = SKCameraNode()
     let motionActivity = Motion()
     var timer: Timer?
     var countdown: Int = -1
-    var doubleJumpIsEnabled = true
+    var doubleJumpIsEnabled = false
     var staminaBar = StaminaBar()
     var facing = "front"
+    var lampPosition = 0.0
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
@@ -51,6 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         case platform = 0b10
         case lamp = 0b100
         case gameOverLine = 0b1000
+        case particlePlatform = 0b10000
     }
     let containerNode = SKNode()
     
@@ -143,7 +153,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-//        scoreLabel.position.x = 50
         scoreLabel.zPosition = 2001
         scoreLabel.fontColor = .white
         scoreLabel.fontSize = 100
@@ -172,19 +181,69 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         containerNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         containerNode.zPosition = 25
         addChild(containerNode)
-        // Membuat lingkaran node
         
         circleNode.fillColor = SKColor.clear
-        // Menambahkan bayangan luar
         circleNode.lineWidth = 550.0
         circleNode.strokeColor = SKColor.black
         circleNode.alpha = 0.857
-//        circleNode.alpha = 0.857
-        circleNode.glowWidth = 150 // Mengatur lebar bayangan luar
-       
-        // Menambahkan lingkaran node ke dalam wadah node
+        circleNode.glowWidth = 150
         containerNode.addChild(circleNode)
+        
+        for i in 1...9 {
+            let radialTexture = SKTexture(imageNamed: "Radial\(i)")
+            let radialNode = SKSpriteNode(texture: radialTexture)
+            radialNode.position = CGPoint(x: player.position.x, y: player.position.y)
+            radialNode.alpha = 0
+            radialNode.zPosition = 9
+            addChild(radialNode)
+            radialNodes.append(radialNode)
+        }
+        
+        if glow {
+            showNextRadial()
+        }
+        
+        showTutorial()
+        howToPlayLabel.text = "Touch to Start"
+        howToPlayLabel.color = .white
+        howToPlayLabel.fontSize = 30
+        howToPlayLabel.zPosition = 2000
+        howToPlayLabel.position = CGPoint(x: size.width / 2, y: 50)
+        addChild(howToPlayLabel)
+        
+        handTapLabel.zPosition = 3000
+        handTapLabel.position = CGPoint(x: size.width / 2, y: 10)
+        handTapLabel.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.2, duration: 1), SKAction.scale(to: 1, duration: 1)])))
+        addChild(handTapLabel)
     }
+    
+    func showTutorial() {
+        howToPlayLabel.text = tutorials[platformCount / 4]
+        howToPlayLabel.isHidden = false
+    }
+    
+    func showNextRadial() {
+        let fadeInDuration: TimeInterval = 0.2
+        let fadeOutDuration: TimeInterval = 0.1
+        
+        let radialNode = radialNodes[currentRadialIndex]
+        currentRadialIndex = (currentRadialIndex + 1) % radialNodes.count
+        
+        let fadeInAction = SKAction.fadeIn(withDuration: fadeInDuration)
+        let fadeOutAction = SKAction.fadeOut(withDuration: fadeOutDuration)
+        let waitAction = SKAction.wait(forDuration: fadeOutDuration)
+        
+        let sequenceAction = SKAction.sequence([fadeInAction, waitAction, fadeOutAction])
+        
+        radialNode.run(sequenceAction) {[self] in
+            if self.currentRadialIndex != 0 {
+                self.showNextRadial()
+            } else {
+                glow = false
+            }
+        }
+    }
+    
     override func update(_ currentTime: TimeInterval) {
 //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
         
@@ -198,7 +257,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bg7.position.y = player.position.y + 200
         bg8.position.y = player.position.y + 200
         bg9.position.y = player.position.y + 200
+        howToPlayLabel.position.y = player.position.y - 100
+        handTapLabel.position.y = player.position.y - 150
+        
         staminaBar.updatePosition(playerPos: player.position.y)
+        
+        for (index, radialNode) in radialNodes.enumerated() {
+            radialNode.position = player.position
+        }
         
         if player.physicsBody!.velocity.dy == 1200 {
             player.texture = SKTexture(imageNamed: "idle-front")
@@ -211,6 +277,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bestScoreLabel.position.y = player.position.y + 650
         
         let newPosition = player.position.x + motionActivity.getAccelerometerDataX()
+                
+        if platformCount == 1 {
+            showTutorial()
+        }
+        
+        if platformCount % 4 == 0 && platformCount / 4 < tutorials.count && platformCount > 0 {
+            showTutorial()
+        }
         
         if newPosition >= 10 && newPosition <= 380 {
             let difference = player.position.x - newPosition
@@ -247,6 +321,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     @objc func doubleTapped() {
+        
+        if platformCount > 8 {
+            doubleJumpIsEnabled = true
+            howToPlayLabel.isHidden = true
+        }
+        
         if doubleJumpIsEnabled {
             doubleJumpIsEnabled = false
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
@@ -267,6 +347,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func didBegin(_ contact: SKPhysicsContact) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        let particlePlatform = SKEmitterNode(fileNamed: "smoke")
         tap.numberOfTapsRequired = 2
         view!.addGestureRecognizer(tap)
         
@@ -290,6 +371,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
                 contactB.node?.removeFromParent()
+            
                 if player.position.x >= 150 && player.position.x <= 240 {
                     player.texture = SKTexture(imageNamed: "idle-front")
                 } else if player.position.x < 150 {
@@ -300,6 +382,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 makePlatform5()
                 makePlatform6()
                 addScore()
+                
+                particlePlatform!.zPosition = 6
+                particlePlatform!.position = CGPoint(x: player.position.x, y: player.position.y)
+                particlePlatform!.setScale(0.8)
+                particlePlatform!.physicsBody?.isDynamic = false
+                particlePlatform!.physicsBody?.allowsRotation = false
+                particlePlatform!.physicsBody?.affectedByGravity = false
+                particlePlatform!.physicsBody?.categoryBitMask = bitmasks.particlePlatform.rawValue
+                particlePlatform!.physicsBody?.collisionBitMask = 0
+                particlePlatform!.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+                let smokeFade = SKAction.fadeOut(withDuration: 1.0)
+                particlePlatform!.alpha = 0.8
+                addChild(particlePlatform!)
+                particlePlatform!.run(SKAction.sequence([smokeFade, .removeFromParent()]))
+                
+                let generator = UIImpactFeedbackGenerator(style: .heavy)
+                generator.impactOccurred()
+                
+                platformCount += 1
             }
         }
         
@@ -314,24 +415,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func glowArea(){
-        let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0) // Mengubah alpha menjadi 0.3 dalam waktu 10 detik
-            let fadeInAction = SKAction.fadeAlpha(to: 0.857, duration: 10.00) // Mengubah alpha menjadi 0.875 dalam waktu 0.5 detik
-            let sequenceAction = SKAction.sequence([fadeOutAction, fadeInAction]) // Menjalankan animasi fadeOutAction dan fadeInAction secara berurutan
+        let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0)
+        let fadeInAction = SKAction.fadeAlpha(to: 0.857, duration: 10.00)
+        let sequenceAction = SKAction.sequence([fadeOutAction, fadeInAction])
             
-            circleNode.run(sequenceAction)
+        circleNode.run(sequenceAction)
+        glow = true
+        showNextRadial()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-
         player.physicsBody?.isDynamic = true
-        if firstTouch == false{ 
+    
+        if firstTouch == false{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
+            firstTouch = true
+            player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
+            player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
+            motionActivity.startAccelorometerUpdate()
+            handTapLabel.isHidden = true
+            howToPlayLabel.isHidden = true
         }
-        firstTouch = true
-        motionActivity.startAccelorometerUpdate()
-        
-        player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
-        player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
     }
     
     func makePlatform(){
@@ -355,6 +459,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 350, highestValue: 550).nextInt() + Int(player.position.y) )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
+//        platform.physicsBody = SKPhysicsBody(texture: platform.texture!, size: platform.size)
         platform.setScale(0.5)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
@@ -407,10 +512,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
         addChild(platform)
         
-        let randomChance = Int(arc4random_uniform(30))
+        var randomChance = 0
+        
+        if platformCount > 10 {
+            randomChance = Int(arc4random_uniform(20))
+        } else if platformCount == 3 {
+            randomChance = 5
+        }
+        
         if randomChance == 5 {
             let lamp = SKSpriteNode(imageNamed: "lamp")
             lamp.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
@@ -423,11 +534,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             lamp.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
             lamp.physicsBody?.collisionBitMask = 0
             lamp.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-            
             addChild(lamp)
             
+            lampPosition = lamp.position.y
         }
-        
     }
     func makePlatform6(){
         let platform = SKSpriteNode(imageNamed: "platform")
@@ -507,12 +617,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
         addChild(platform)
     }
     
     @objc func fireTimer() {
-        print(countdown)
         if countdown == 0 {
             doubleJumpIsEnabled = true
         } else if countdown > 0 {

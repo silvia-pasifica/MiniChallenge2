@@ -12,13 +12,13 @@ class StaminaBar: SKNode {
     
     private var stamina = CGFloat(0)
     private var maxStamina = CGFloat(8)
-    private var maxStaminaBarWidth = CGFloat(90)
+    private var maxStaminaBarWidth = CGFloat(160)
     
     private var staminaBar = SKSpriteNode()
     private var staminaBarContainer = SKSpriteNode()
     
-    private let staminaTexture = SKTexture(imageNamed: "black")
-    private let staminaContainerTexture = SKTexture(imageNamed: "white")
+    private let staminaTexture = SKTexture(imageNamed: "bar-fill")
+    private let staminaContainerTexture = SKTexture(imageNamed: "bar-frame")
     
     private var sceneFrame = CGRect()
     
@@ -36,20 +36,21 @@ class StaminaBar: SKNode {
     
     func buildStaminaBar() {
         staminaBarContainer = SKSpriteNode(texture: staminaContainerTexture, size: staminaContainerTexture.size())
-        staminaBarContainer.size.width = 100
-        staminaBarContainer.size.height = 20
-        staminaBarContainer.zPosition = 100
-        staminaBarContainer.position.x = 80
+        staminaBarContainer.size.width = 180
+        staminaBarContainer.size.height = 60
+        staminaBarContainer.zPosition = 101
+        staminaBarContainer.position.x = 100
         
         staminaBar = SKSpriteNode(texture: staminaTexture, size: staminaTexture.size())
         staminaBar.size.width = maxStaminaBarWidth
-        staminaBar.size.height = 15
-        staminaBar.zPosition = 101
-        staminaBar.position.x = 35
-        staminaBar.anchorPoint = CGPoint(x: 0, y: 0.5)
+        staminaBar.size.height = 18
+        staminaBar.zPosition = 100
+        staminaBar.position.x = 30
+        staminaBar.anchorPoint = CGPoint(x: 0, y: 0.25)
+        staminaBar.alpha = 0.5
         
-        addChild(staminaBarContainer)
         addChild(staminaBar)
+        addChild(staminaBarContainer)
     }
     
     func decreaseStaminaBar() {
