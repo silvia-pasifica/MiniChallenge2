@@ -16,13 +16,8 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     let background = SKSpriteNode(imageNamed: "background")
     let player = SKSpriteNode(imageNamed: "bunny")
     let ground = SKSpriteNode(imageNamed: "ground_grass")
-<<<<<<< HEAD:DoodleJump copy/DoodleJump/GameScene.swift
-    let tree = SKSpriteNode(imageNamed: "tree")
-    let dog = SKSpriteNode(imageNamed: "dog")
-=======
     let monster = SKSpriteNode(imageNamed: "monster")
     var knife = SKSpriteNode(imageNamed: "knife")
->>>>>>> albert:DoodleJump copy/DoodleJump/AsylumCafetaria.swift
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
     let scoreLabel = SKLabelNode()
@@ -54,14 +49,6 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = 1
         addChild(background)
-        
-        tree.position = CGPoint(x: size.width / 2 , y: size.height / 2)
-        tree.zPosition = 2
-        addChild(tree)
-        
-        dog.position = CGPoint(x: size.width / 2 + 50 , y: size.height / 2)
-        dog.zPosition = 3
-        addChild(dog)
         
         physicsWorld.contactDelegate = self
         
@@ -152,14 +139,6 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             knife.position.y = cam.position.y - 400
         }
         background.setScale(1.5)
-<<<<<<< HEAD:DoodleJump copy/DoodleJump/GameScene.swift
-        
-        tree.position.y = player.position.y + 200
-        dog.position.y = player.position.y + 200
-        
-        if player.physicsBody!.velocity.dy > 0 {
-            gameOverLine.position.y = player.position.y - 600 //remove the platform
-=======
         if cam.position.y - player.position.y < 50{
             cam.position.y = player.position.y + 50
             background.position.y = player.position.y +  50
@@ -175,7 +154,6 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             
         }else{
             monster.position.y = player.position.y - 1000
->>>>>>> albert:DoodleJump copy/DoodleJump/AsylumCafetaria.swift
         }
         //        if player.physicsBody!.velocity.dy < 0{
         //
@@ -187,29 +165,12 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
         if newPosition >= -40 && newPosition <= 430 {
-            let difference = player.position.x - newPosition
-            
             player.position.x = newPosition
-            tree.position.x = size.width / 2 - newPosition / 4
-            dog.position.x = size.width / 2 - newPosition / 2
         }
-    }
-    
-    @objc func doubleTapped() {
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
-        makePlatform5()
-        makePlatform6()
-        makePlatform7()
-        makePlatform8()
-        makePlatform9()
-        makePlatform10()
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        tap.numberOfTapsRequired = 2
-        view!.addGestureRecognizer(tap)
-        
         let contactA: SKPhysicsBody
         let contactB: SKPhysicsBody
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask{
@@ -446,89 +407,6 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         addChild(platform)
     }
     
-<<<<<<< HEAD:DoodleJump copy/DoodleJump/GameScene.swift
-    func makePlatform7(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1600, highestValue: 1800).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.2)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform8(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1850, highestValue: 2050).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.2)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform9(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2100, highestValue: 2300).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.2)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform10(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2350, highestValue: 2550).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.2)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform11(){
-        let platform = SKSpriteNode(imageNamed: "ground_grass_broken")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2600, highestValue: 2800).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.2)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-
-        addChild(platform)
-    }
-    
-=======
->>>>>>> albert:DoodleJump copy/DoodleJump/AsylumCafetaria.swift
     func gameOver()
     {
         let gameOverScene = GameOverScene(size: self.size)
