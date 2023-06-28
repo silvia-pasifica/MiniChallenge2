@@ -12,14 +12,14 @@ import UIKit
 var audioPlayer: AVAudioPlayer!
 var audioPlayers = [AVAudioPlayer]()
 func playMusic(music: String, loop: Int, volume: Float) {
-    guard let audioData = NSDataAsset(name: music)?.data else {
-        fatalError("Unable to find asset \(music)")
-    }
+    
+    let path = Bundle.main.path(forResource: music, ofType: nil)!
+    let url = URL(fileURLWithPath: path)
     
     do {
-        audioPlayer = try AVAudioPlayer(data: audioData)
+        audioPlayer = try AVAudioPlayer(contentsOf: url)
         audioPlayer.numberOfLoops = loop
-        audioPlayer.volume = 0
+        audioPlayer.volume = volume
         audioPlayer.play()
         audioPlayers.append(audioPlayer)
     } catch {

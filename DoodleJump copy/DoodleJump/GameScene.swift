@@ -36,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let handTapLabel = SKSpriteNode(imageNamed: "hand-tap")
     var tutorials = ["Tilt to Move", "Grab The Lamps", "Double Tap to Jump Higher"]
     var platformCount = 0
+    var firstDoubleTap = false
     
     var glow = false
     var radialNodes: [SKSpriteNode] = []
@@ -215,6 +216,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         handTapLabel.position = CGPoint(x: size.width / 2, y: 10)
         handTapLabel.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.2, duration: 1), SKAction.scale(to: 1, duration: 1)])))
         addChild(handTapLabel)
+        
+        playMusic(music: "stage1-backsound.mp3", loop: -1, volume: 1)
     }
     
     func showTutorial() {
@@ -322,14 +325,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     @objc func doubleTapped() {
         
-        if platformCount > 8 {
+        if platformCount > 8 && !firstDoubleTap {
             doubleJumpIsEnabled = true
             howToPlayLabel.isHidden = true
+            firstDoubleTap = true
         }
         
         if doubleJumpIsEnabled {
             doubleJumpIsEnabled = false
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1100 ))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
+            playMusic(music: "double-jump.mp3", loop: 0, volume: 1)
             makePlatform5()
             makePlatform6()
             makePlatform7()
@@ -400,6 +405,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 let generator = UIImpactFeedbackGenerator(style: .heavy)
                 generator.impactOccurred()
                 
+                playMusic(music: "jump.mp3", loop: 0, volume: 1)
+                
                 platformCount += 1
             }
         }
@@ -409,6 +416,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.lamp.rawValue{
+            playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
             glowArea()
             contactB.node?.removeFromParent()
         }
@@ -523,20 +531,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         if randomChance == 5 {
-            let lamp = SKSpriteNode(imageNamed: "lamp")
-            lamp.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
-            lamp.zPosition = platform.zPosition + 1
-            lamp.physicsBody = SKPhysicsBody(rectangleOf: lamp.size)
-            lamp.setScale(0.1)
-            lamp.physicsBody?.isDynamic = false
-            lamp.physicsBody?.allowsRotation = false
-            lamp.physicsBody?.affectedByGravity = false
-            lamp.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
-            lamp.physicsBody?.collisionBitMask = 0
-            lamp.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-            addChild(lamp)
+            let radio = SKSpriteNode(imageNamed: "radio")
+            radio.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
+            radio.zPosition = platform.zPosition + 1
+            radio.physicsBody = SKPhysicsBody(rectangleOf: radio.size)
+            radio.setScale(0.1)
+            radio.physicsBody?.isDynamic = false
+            radio.physicsBody?.allowsRotation = false
+            radio.physicsBody?.affectedByGravity = false
+            radio.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
+            radio.physicsBody?.collisionBitMask = 0
+            radio.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+            addChild(radio)
             
-            lampPosition = lamp.position.y
+            lampPosition = radio.position.y
         }
     }
     func makePlatform6(){
