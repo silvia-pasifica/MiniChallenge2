@@ -33,15 +33,11 @@ class StartScene: SKScene{
             let lokation = touch.location(in: self)
             let startNode = atPoint(lokation)
             
-            if startNode.name == "startButton"
-            {
-//                videoNode?.run(SKAction.scale(to: 5, duration: 0.5))
+            if startNode.name == "startButton" {
                 videoLooper?.disableLooping()
                 videoNode?.pause()
                 self.videoLooper = nil
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.view?.presentScene(GameScene(size: self.size), transition: SKTransition.fade(withDuration: 3))
-//                }
+                self.view?.presentScene(PipingSector(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
     }

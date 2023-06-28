@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate{
+class PipingSector: SKScene, SKPhysicsContactDelegate{
     let bg1 = SKSpriteNode(imageNamed: "bg1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform")
@@ -62,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         case lamp = 0b100
         case gameOverLine = 0b1000
         case particlePlatform = 0b10000
+        case casette = 0b100000
     }
     let containerNode = SKNode()
     
@@ -384,9 +385,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 } else {
                     player.texture = SKTexture(imageNamed: "idle-right")
                 }
-                makePlatform5()
-                makePlatform6()
-                addScore()
+                
+                
+                if platformCount == 10 {
+                    makePlatform()
+                } else {
+                    makePlatform5()
+                    makePlatform6()
+                    addScore()
+                }
                 
                 particlePlatform!.zPosition = 6
                 particlePlatform!.position = CGPoint(x: player.position.x, y: player.position.y)
@@ -419,6 +426,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
             glowArea()
             contactB.node?.removeFromParent()
+        }
+        
+        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
+            playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
+            contactB.node?.removeFromParent()
+            
+            self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
         }
     }
     
@@ -461,6 +475,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         
         addChild(platform)
+        
+        if platformCount == 10 {
+            let casette = SKSpriteNode(imageNamed: "casette")
+            casette.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
+            casette.zPosition = platform.zPosition + 1
+            casette.physicsBody = SKPhysicsBody(rectangleOf: casette.size)
+            casette.setScale(0.1)
+            casette.physicsBody?.isDynamic = false
+            casette.physicsBody?.allowsRotation = false
+            casette.physicsBody?.affectedByGravity = false
+            casette.physicsBody?.categoryBitMask = bitmasks.casette.rawValue
+            casette.physicsBody?.collisionBitMask = 0
+            casette.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+            addChild(casette)
+        }
     }
     func makePlatform2(){
         let platform = SKSpriteNode(imageNamed: "platform")
