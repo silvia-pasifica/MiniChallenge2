@@ -7,7 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300F796B2A458DC000C9D083 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300F796A2A458DC000C9D083 /* AudioPlayer.swift */; };
 		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
+		3083C62D2A4C18F100AE220B /* jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3083C62C2A4C18F100AE220B /* jump.mp3 */; };
+		3083C62F2A4C19E000AE220B /* double-jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3083C62E2A4C19E000AE220B /* double-jump.mp3 */; };
+		30A4A6422A4B2B9C00B3F69D /* stage1-backsound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30A4A6412A4B2B9C00B3F69D /* stage1-backsound.mp3 */; };
+		30A4A6442A4B319800B3F69D /* pickup-item.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30A4A6432A4B319800B3F69D /* pickup-item.mp3 */; };
+		30A4A6462A4B323E00B3F69D /* pickup-item-2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30A4A6452A4B323E00B3F69D /* pickup-item-2.mp3 */; };
+		30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AF1B562A44426E00EC6B90 /* StaminaBar.swift */; };
+		30FF2CCE2A48718C0075735F /* game_menu.mov in Resources */ = {isa = PBXBuildFile; fileRef = 30FF2CCD2A48718C0075735F /* game_menu.mov */; };
+		30FF2CD12A488B8D0075735F /* smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 30FF2CCF2A488B8D0075735F /* smoke.sks */; };
+		30FF2CD22A488B8D0075735F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30FF2CD02A488B8D0075735F /* Assets.xcassets */; };
 		4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */; };
 		4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23D02A384AEC00DD26E7 /* ContentView.swift */; };
 		4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23D22A384AED00DD26E7 /* Assets.xcassets */; };
@@ -20,7 +30,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		300F796A2A458DC000C9D083 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		3083C62C2A4C18F100AE220B /* jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jump.mp3; sourceTree = "<group>"; };
+		3083C62E2A4C19E000AE220B /* double-jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "double-jump.mp3"; sourceTree = "<group>"; };
+		30A4A6412A4B2B9C00B3F69D /* stage1-backsound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stage1-backsound.mp3"; sourceTree = "<group>"; };
+		30A4A6432A4B319800B3F69D /* pickup-item.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "pickup-item.mp3"; sourceTree = "<group>"; };
+		30A4A6452A4B323E00B3F69D /* pickup-item-2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "pickup-item-2.mp3"; sourceTree = "<group>"; };
+		30AF1B562A44426E00EC6B90 /* StaminaBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaminaBar.swift; sourceTree = "<group>"; };
+		30FF2CCD2A48718C0075735F /* game_menu.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = game_menu.mov; sourceTree = "<group>"; };
+		30FF2CCF2A488B8D0075735F /* smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = smoke.sks; sourceTree = "<group>"; };
+		30FF2CD02A488B8D0075735F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BFC23CB2A384AEC00DD26E7 /* DoodleJump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoodleJump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoodleJumpApp.swift; sourceTree = "<group>"; };
 		4BFC23D02A384AEC00DD26E7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,9 +64,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3083C6302A4C19E700AE220B /* Jump */ = {
+			isa = PBXGroup;
+			children = (
+				3083C62E2A4C19E000AE220B /* double-jump.mp3 */,
+				3083C62C2A4C18F100AE220B /* jump.mp3 */,
+			);
+			path = Jump;
+			sourceTree = "<group>";
+		};
+		30A4A6402A4B2B5B00B3F69D /* musics */ = {
+			isa = PBXGroup;
+			children = (
+				3083C6302A4C19E700AE220B /* Jump */,
+				30A4A6452A4B323E00B3F69D /* pickup-item-2.mp3 */,
+				30A4A6432A4B319800B3F69D /* pickup-item.mp3 */,
+				30A4A6412A4B2B9C00B3F69D /* stage1-backsound.mp3 */,
+			);
+			path = musics;
+			sourceTree = "<group>";
+		};
 		4BFC23C22A384AEC00DD26E7 = {
 			isa = PBXGroup;
 			children = (
+				30FF2CCF2A488B8D0075735F /* smoke.sks */,
+				30FF2CD02A488B8D0075735F /* Assets.xcassets */,
 				4BFC23CD2A384AEC00DD26E7 /* DoodleJump */,
 				4BFC23CC2A384AEC00DD26E7 /* Products */,
 			);
@@ -64,6 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				4BFC23DE2A385EE700DD26E7 /* AsylumCafetaria.swift */,
+				30A4A6402A4B2B5B00B3F69D /* musics */,
+				30FF2CCD2A48718C0075735F /* game_menu.mov */,
 				4BFC23DE2A385EE700DD26E7 /* GameScene.swift */,
 				D55952BA2A3C3D020001C94A /* Stage 3.swift */,
 				4BFC23CE2A384AEC00DD26E7 /* DoodleJumpApp.swift */,
@@ -73,6 +117,10 @@
 				4BFC23DC2A38563A00DD26E7 /* StartScene.sks */,
 				4BFC23D22A384AED00DD26E7 /* Assets.xcassets */,
 				4BFC23D42A384AED00DD26E7 /* Preview Content */,
+				4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */,
+				30444F412A3B06A6000B5350 /* MotionManager.swift */,
+				30AF1B562A44426E00EC6B90 /* StaminaBar.swift */,
+				300F796A2A458DC000C9D083 /* AudioPlayer.swift */,
 				D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */,
 			);
 			path = DoodleJump;
@@ -144,9 +192,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A4A6422A4B2B9C00B3F69D /* stage1-backsound.mp3 in Resources */,
 				4BFC23DD2A38563B00DD26E7 /* StartScene.sks in Resources */,
+				30FF2CD12A488B8D0075735F /* smoke.sks in Resources */,
+				30A4A6462A4B323E00B3F69D /* pickup-item-2.mp3 in Resources */,
 				4BFC23D62A384AED00DD26E7 /* Preview Assets.xcassets in Resources */,
 				4BFC23D32A384AED00DD26E7 /* Assets.xcassets in Resources */,
+				3083C62D2A4C18F100AE220B /* jump.mp3 in Resources */,
+				30A4A6442A4B319800B3F69D /* pickup-item.mp3 in Resources */,
+				30FF2CD22A488B8D0075735F /* Assets.xcassets in Resources */,
+				30FF2CCE2A48718C0075735F /* game_menu.mov in Resources */,
+				3083C62F2A4C19E000AE220B /* double-jump.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,11 +216,13 @@
 				4BFC23DF2A385EE700DD26E7 /* AsylumCafetaria.swift in Sources */,
 				D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */,
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
+				30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,
 				D55952BB2A3C3D020001C94A /* Stage 3.swift in Sources */,
 				4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */,
 				4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */,
+				300F796B2A458DC000C9D083 /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
