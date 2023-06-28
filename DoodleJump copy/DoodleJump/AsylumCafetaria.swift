@@ -132,6 +132,9 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         let knifeIncrementPerSecond: CGFloat = 20
         if(firstTouch == true){
             cam.position.y += camIncrementPerSecond
+            background.position.y = cam.position.y
+            scoreLabel.position.y = cam.position.y + 600
+            bestScoreLabel.position.y = cam.position.y + 550
         }
         if(randomKnife != 2 && randomKnife != -1){
             knife.position.y += knifeIncrementPerSecond
@@ -141,15 +144,10 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         background.setScale(1.5)
         if cam.position.y - player.position.y < 50{
             cam.position.y = player.position.y + 50
-            background.position.y = player.position.y +  50
-            scoreLabel.position.y = player.position.y + 650
-            bestScoreLabel.position.y = player.position.y + 600
-        }else{
+            background.position.y = cam.position.y
+            scoreLabel.position.y = cam.position.y + 600
+            bestScoreLabel.position.y = cam.position.y + 550
         }
-        //        if player.physicsBody!.velocity.dy > 0 {
-        //            gameOverLine.position.y = player.position.y - 600 //remove the platform
-        //
-        //        }
         if player.position.y - monster.position.y < 1000 {
             
         }else{

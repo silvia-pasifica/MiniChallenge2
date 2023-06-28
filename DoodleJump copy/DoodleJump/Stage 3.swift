@@ -79,21 +79,6 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-        scoreLabel.position.x = 50
-        scoreLabel.zPosition = 20
-        scoreLabel.fontColor = .black
-        scoreLabel.fontSize = 32
-        scoreLabel.text = "Score: \(score)"
-        addChild(scoreLabel)
-        
-        bestScore = defaults.integer(forKey: "best")
-        bestScoreLabel.position.x = 50
-        bestScoreLabel.zPosition = 20
-        bestScoreLabel.fontColor = .black
-        bestScoreLabel.fontSize = 32
-        bestScoreLabel.text = "Best Score: \(bestScore)"
-        addChild(bestScoreLabel)
-        
         makePlatform(lowestValueX: 20, highestValueX: 350, lowestValueY: 120, highestValueY: 300)
         makePlatform(lowestValueX: 5, highestValueX: 350, lowestValueY: 350, highestValueY: 500)
         makePlatform(lowestValueX: 20, highestValueX: 450, lowestValueY: 550, highestValueY: 700)
@@ -108,22 +93,28 @@ class Stage_3: SKScene, SKPhysicsContactDelegate{
     }
     override func update(_ currentTime: TimeInterval) {
         //        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
-        cam.position.y = player.position.y + 200
-        background.position.y = player.position.y +  200
         background.setScale(1.5)
-        
-        if player.physicsBody!.velocity.dy > 0 {
-            gameOverLine.position.y = player.position.y - 600 //remove the platform
-        }
-        scoreLabel.position.y = player.position.y + 700
-        bestScoreLabel.position.y = player.position.y + 650
         
         var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
         if newPosition >= -40 && newPosition <= 430 {
             player.position.x = newPosition
         }
-        
+        //cam bergerak
+        let camIncrementPerSecond: CGFloat = 0.5
+        gameOverLine.position.y = cam.position.y - 700
+        if(firstTouch == true){
+            cam.position.y += camIncrementPerSecond
+            background.position.y = cam.position.y
+            scoreLabel.position.y = cam.position.y + 600
+            bestScoreLabel.position.y = cam.position.y + 550
+        }
+        if cam.position.y - player.position.y < 50{
+            cam.position.y = player.position.y + 50
+            background.position.y = cam.position.y
+            scoreLabel.position.y = cam.position.y + 600
+            bestScoreLabel.position.y = cam.position.y + 550
+        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
