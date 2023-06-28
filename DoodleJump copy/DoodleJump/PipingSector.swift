@@ -22,6 +22,7 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     let bg8 = SKSpriteNode(imageNamed: "bg8")
     let bg9 = SKSpriteNode(imageNamed: "bg9")
     
+    let maxPlatformCount = 10
     var lampSpawnTimer: Timer?
     let circleNode = SKShapeNode(circleOfRadius: 500)
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
@@ -169,12 +170,12 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         bestScoreLabel.text = "Best Score: \(bestScore)"
         addChild(bestScoreLabel)
         
-        makePlatform()
-        makePlatform2()
-        makePlatform3()
-        makePlatform4()
-        makePlatform5()
-        makePlatform6()
+        makePlatform(lowestValueY: 120, highestValueY: 300)
+        makePlatform(lowestValueY: 350, highestValueY: 500)
+        makePlatform(lowestValueY: 550, highestValueY: 700)
+        makePlatform(lowestValueY: 750, highestValueY: 950)
+        makePlatform(lowestValueY: 970, highestValueY: 1150)
+        makePlatform(lowestValueY: 1200, highestValueY: 1350)
         
         cam.setScale(1.0)
         cam.position.x = player.position.x
@@ -249,7 +250,6 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     }
     
     override func update(_ currentTime: TimeInterval) {
-//        cam.position = CGPoint(x: size.width / 2, y: player.position.y + 200)
         
         cam.position.y = player.position.y + 200
         bg1.position.y = player.position.y + 200
@@ -268,10 +268,6 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         
         for (index, radialNode) in radialNodes.enumerated() {
             radialNode.position = player.position
-        }
-        
-        if player.physicsBody!.velocity.dy == 1200 {
-            player.texture = SKTexture(imageNamed: "idle-front")
         }
         
         if player.physicsBody!.velocity.dy > 0 {
@@ -336,12 +332,12 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             doubleJumpIsEnabled = false
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             playMusic(music: "double-jump.mp3", loop: 0, volume: 1)
-            makePlatform5()
-            makePlatform6()
-            makePlatform7()
-            makePlatform8()
-            makePlatform9()
-            makePlatform10()
+            makePlatform(lowestValueY: 1100, highestValueY: 1300)
+            makePlatform(lowestValueY: 1350, highestValueY: 1550)
+            makePlatform(lowestValueY: 1600, highestValueY: 1800)
+            makePlatform(lowestValueY: 1850, highestValueY: 2050)
+            makePlatform(lowestValueY: 2100, highestValueY: 2300)
+            makePlatform(lowestValueY: 2350, highestValueY: 2550)
             countdown = 8
             staminaBar.decreaseStaminaBar()
             
@@ -376,7 +372,6 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.platform.rawValue{
             if player.physicsBody!.velocity.dy < 0 {
                 player.physicsBody?.velocity = CGVector(dx: player.physicsBody!.velocity.dx, dy: 1200)
-                contactB.node?.removeFromParent()
             
                 if player.position.x >= 150 && player.position.x <= 240 {
                     player.texture = SKTexture(imageNamed: "idle-front")
@@ -387,11 +382,11 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
                 }
                 
                 
-                if platformCount == 10 {
-                    makePlatform()
-                } else {
-                    makePlatform5()
-                    makePlatform6()
+                if platformCount == maxPlatformCount {
+                    makePlatform(lowestValueY: 1200, highestValueY: 1350)
+                } else if platformCount < maxPlatformCount {
+                    makePlatform(lowestValueY: 970, highestValueY: 1150)
+                    makePlatform(lowestValueY: 1200, highestValueY: 1350)
                     addScore()
                 }
                 
@@ -415,6 +410,8 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
                 playMusic(music: "jump.mp3", loop: 0, volume: 1)
                 
                 platformCount += 1
+                
+                contactB.node?.removeFromParent()
             }
         }
         
@@ -428,11 +425,13 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             contactB.node?.removeFromParent()
         }
         
-        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
-            playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
-            contactB.node?.removeFromParent()
-            
-            self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
+        if (player.physicsBody?.velocity.dy)! < 0 {
+            if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
+                playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
+                contactB.node?.removeFromParent()
+                
+                self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
+            }
         }
     }
     
@@ -460,13 +459,12 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-    func makePlatform(){
+    func makePlatform(lowestValueY: Int, highestValueY: Int){
         let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 140, highestValue: 300).nextInt() + Int(player.position.y) )
-        //platform.position = CGPoint(x: size.width / 2, y : size.height / 2 )
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueY).nextInt() + Int(player.position.y) )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
+        platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.5)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
         platform.physicsBody?.affectedByGravity = false
@@ -474,14 +472,14 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         
-        addChild(platform)
-        
-        if platformCount == 10 {
+        if platformCount == maxPlatformCount {
+            platform.position.x = size.width / 2
             let casette = SKSpriteNode(imageNamed: "casette")
-            casette.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
+            casette.position = CGPoint(x: size.width / 2, y: platform.position.y + 100
+            )
             casette.zPosition = platform.zPosition + 1
             casette.physicsBody = SKPhysicsBody(rectangleOf: casette.size)
-            casette.setScale(0.1)
+            casette.setScale(0.3)
             casette.physicsBody?.isDynamic = false
             casette.physicsBody?.allowsRotation = false
             casette.physicsBody?.affectedByGravity = false
@@ -489,171 +487,35 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             casette.physicsBody?.collisionBitMask = 0
             casette.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
             addChild(casette)
-        }
-    }
-    func makePlatform2(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 350, highestValue: 550).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-//        platform.physicsBody = SKPhysicsBody(texture: platform.texture!, size: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    func makePlatform3(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 600, highestValue: 800).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.4)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    func makePlatform4(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 850, highestValue: 1050).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    func makePlatform5(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1100, highestValue: 1300).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.4)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        addChild(platform)
-        
-        var randomChance = 0
-        
-        if platformCount > 10 {
-            randomChance = Int(arc4random_uniform(20))
-        } else if platformCount == 3 {
-            randomChance = 5
-        }
-        
-        if randomChance == 5 {
-            let radio = SKSpriteNode(imageNamed: "radio")
-            radio.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
-            radio.zPosition = platform.zPosition + 1
-            radio.physicsBody = SKPhysicsBody(rectangleOf: radio.size)
-            radio.setScale(0.1)
-            radio.physicsBody?.isDynamic = false
-            radio.physicsBody?.allowsRotation = false
-            radio.physicsBody?.affectedByGravity = false
-            radio.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
-            radio.physicsBody?.collisionBitMask = 0
-            radio.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-            addChild(radio)
+        } else {
             
-            lampPosition = radio.position.y
+            var randomChance = 0
+            
+            if platformCount > 10 {
+                randomChance = Int(arc4random_uniform(20))
+            } else if platformCount == 3 {
+                randomChance = 5
+            }
+            
+            if randomChance == 5 {
+                let radio = SKSpriteNode(imageNamed: "radio")
+                radio.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
+                radio.zPosition = platform.zPosition + 1
+                radio.physicsBody = SKPhysicsBody(rectangleOf: radio.size)
+                radio.setScale(0.3)
+                radio.physicsBody?.isDynamic = false
+                radio.physicsBody?.allowsRotation = false
+                radio.physicsBody?.affectedByGravity = false
+                radio.physicsBody?.categoryBitMask = bitmasks.lamp.rawValue
+                radio.physicsBody?.collisionBitMask = 0
+                radio.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+                addChild(radio)
+                
+                lampPosition = radio.position.y
+            }
         }
-    }
-    func makePlatform6(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1350, highestValue: 1550).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform7(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1600, highestValue: 1800).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform8(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 1850, highestValue: 2050).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
         
         
-    }
-    
-    func makePlatform9(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2100, highestValue: 2300).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.5)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
-        
-        addChild(platform)
-    }
-    
-    func makePlatform10(){
-        let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: 2350, highestValue: 2550).nextInt() + Int(player.position.y) )
-        platform.zPosition = 5
-        platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(0.4)
-        platform.physicsBody?.isDynamic = false
-        platform.physicsBody?.allowsRotation = false
-        platform.physicsBody?.affectedByGravity = false
-        platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
-        platform.physicsBody?.collisionBitMask = 0
-        platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         addChild(platform)
     }
     
