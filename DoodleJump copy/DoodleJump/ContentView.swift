@@ -37,7 +37,7 @@ class StartScene: SKScene{
                 videoLooper?.disableLooping()
                 videoNode?.pause()
                 self.videoLooper = nil
-                self.view?.presentScene(PipingSector(size: self.size), transition: SKTransition.fade(withDuration: 3))
+                self.view?.presentScene(PatientRoom(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
     }
