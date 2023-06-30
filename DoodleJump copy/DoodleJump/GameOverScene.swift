@@ -14,32 +14,17 @@ class GameOverScene: SKScene
     let background = SKSpriteNode(imageNamed: "background")
     
     override func didMove(to view: SKView) {
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        addChild(background)
-        gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        gameOver.setScale(1.6)
-        gameOver.zPosition = 5
-        addChild(gameOver)
-        
-        let tapLabel = SKLabelNode()
-        tapLabel.position = CGPoint(x: size.width / 2, y: size.height / 4)
-        tapLabel.text = "Tap to restart"
-        tapLabel.fontSize = 46
-        tapLabel.fontColor = .black
-        addChild(tapLabel)
-        
-        let outAction = SKAction.fadeOut(withDuration: 0.5)
-        let inAction = SKAction.fadeIn(withDuration: 0.5)
-        let sequence = SKAction.sequence([outAction, inAction])
-        
-        tapLabel.run(SKAction.repeatForever(sequence))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // play lagu
+            
+            let gameScene = AsylumCafetaria(size: self.size)
+            let transition = SKTransition.fade(withDuration: 1)
+            view.presentScene(gameScene,transition: transition)
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let gameScene = PatientRoom(size: self.size)
-        let transition = SKTransition.flipVertical(withDuration: 1)
         
-        view?.presentScene(gameScene,transition: transition)
     }
     
     

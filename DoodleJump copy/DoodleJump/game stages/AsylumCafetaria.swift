@@ -158,7 +158,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         player.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.gameOverLine.rawValue
         addChild(player)
         
-        monster.position = CGPoint(x: player.position.x, y: player.position.y - 1000)
+        monster.position = CGPoint(x: player.position.x, y: player.position.y - 200)
         monster.zPosition = 10
         monster.setScale(0.20)
         monster.physicsBody = SKPhysicsBody(circleOfRadius: monster.size.height / 2)
@@ -283,10 +283,10 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             scoreLabel.position.y = cam.position.y + 600
             bestScoreLabel.position.y = cam.position.y + 550
         }
-        if player.position.y - monster.position.y < 1000 {
+        if player.position.y - monster.position.y < 600 {
             
         }else{
-            monster.position.y = player.position.y - 1000
+            monster.position.y = player.position.y - 600
         }
         
         monster.position.x = player.position.x
@@ -480,11 +480,12 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             gameOver()
         }
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.monster.rawValue{
+            playMusic(music: "butcher-growl.mp3", loop: 0, volume: 1)
             gameOver()
         }
-//        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.knife.rawValue{
-//            gameOver()
-//        }
+        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.knife.rawValue{
+            gameOver()
+        }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.lamp.rawValue{
             playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
@@ -497,7 +498,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
                 playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
                 contactB.node?.removeFromParent()
                 
-                self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
+                self.view?.presentScene(PatientRoom(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
     }
@@ -522,6 +523,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
         player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
         motionActivity.startAccelorometerUpdate()
+        playMusic(music: "butcher-growl.mp3", loop: 0, volume: 1)
     }
     
     func makeKnife(){
@@ -529,12 +531,11 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         knife.position = CGPoint(x: playercurrX, y: cam.position.y - 500)
         knife.zPosition = 10
         knife.setScale(0.20)
-        knife.physicsBody = SKPhysicsBody(circleOfRadius: knife.size.height / 2)
+        knife.physicsBody = SKPhysicsBody(circleOfRadius: knife.size.width / 2 - 50)
         knife.physicsBody?.isDynamic = false
         knife.physicsBody?.restitution = 0
         knife.physicsBody?.friction = 0
         knife.physicsBody?.angularDamping = 0
-        
         knife.physicsBody?.categoryBitMask = bitmasks.knife.rawValue
         knife.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         
