@@ -17,9 +17,18 @@ class GameOverScene: SKScene
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             // play lagu
             
-            let gameScene = AsylumCafetaria(size: self.size)
+            
+            let checkpoint = UserDefaults().integer(forKey: "checkpoint")
             let transition = SKTransition.fade(withDuration: 1)
-            view.presentScene(gameScene,transition: transition)
+            
+            switch checkpoint {
+            case 1:
+                view.presentScene(PipingSector(size: self.size), transition: transition)
+            case 2:
+                view.presentScene(AsylumCafetaria(size: self.size), transition: transition)
+            default:
+                view.presentScene(PatientRoom(size: self.size), transition: transition)
+            }
         }
     }
     

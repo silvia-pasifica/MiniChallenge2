@@ -11,6 +11,8 @@ import GameplayKit
 
 
 class PatientRoom: SKScene, SKPhysicsContactDelegate{
+    
+    let checkpoint = 3
     let bg1 = SKSpriteNode(imageNamed: "bg3-1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform-3")
@@ -70,6 +72,8 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
     }
     
     override func didMove(to view: SKView) {
+        defaults.set(3, forKey: "checkpoint")
+        
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
         

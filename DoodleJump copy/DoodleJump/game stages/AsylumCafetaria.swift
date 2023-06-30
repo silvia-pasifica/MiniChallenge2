@@ -10,6 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
+    let checkpoint: Int = 2
     let bg1 = SKSpriteNode(imageNamed: "bg2-1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform-2")
@@ -76,6 +77,8 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
 //        physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
+        
+        defaults.set(2, forKey: "checkpoint")
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         

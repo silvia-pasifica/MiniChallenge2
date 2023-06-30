@@ -10,6 +10,8 @@ import SpriteKit
 import GameplayKit
 
 class PipingSector: SKScene, SKPhysicsContactDelegate{
+
+    let checkpoint = 1
     let bg1 = SKSpriteNode(imageNamed: "bg1-1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform")
@@ -70,6 +72,8 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     override func didMove(to view: SKView) {
         self.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.anchorPoint = .zero
+        
+        defaults.set(1, forKey: "checkpoint")
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         
