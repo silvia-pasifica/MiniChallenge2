@@ -11,6 +11,8 @@
 		30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30444F412A3B06A6000B5350 /* MotionManager.swift */; };
 		30789B532A4EB27300CC02D5 /* hands-wall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30789B522A4EB27300CC02D5 /* hands-wall.mp3 */; };
 		30789B552A4EC64500CC02D5 /* butcher-growl.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30789B542A4EC64500CC02D5 /* butcher-growl.mp3 */; };
+		30789B572A4F2A8B00CC02D5 /* SurgeryRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30789B562A4F2A8B00CC02D5 /* SurgeryRoom.swift */; };
+		30789B592A4F454A00CC02D5 /* stage4-backsound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30789B582A4F454A00CC02D5 /* stage4-backsound.mp3 */; };
 		3083C62D2A4C18F100AE220B /* jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3083C62C2A4C18F100AE220B /* jump.mp3 */; };
 		3083C62F2A4C19E000AE220B /* double-jump.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3083C62E2A4C19E000AE220B /* double-jump.mp3 */; };
 		3083C6322A4C1E3A00AE220B /* AsylumCafetaria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3083C6312A4C1E3A00AE220B /* AsylumCafetaria.swift */; };
@@ -40,6 +42,8 @@
 		30444F412A3B06A6000B5350 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		30789B522A4EB27300CC02D5 /* hands-wall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "hands-wall.mp3"; sourceTree = "<group>"; };
 		30789B542A4EC64500CC02D5 /* butcher-growl.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "butcher-growl.mp3"; sourceTree = "<group>"; };
+		30789B562A4F2A8B00CC02D5 /* SurgeryRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurgeryRoom.swift; sourceTree = "<group>"; };
+		30789B582A4F454A00CC02D5 /* stage4-backsound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "stage4-backsound.mp3"; sourceTree = "<group>"; };
 		3083C62C2A4C18F100AE220B /* jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jump.mp3; sourceTree = "<group>"; };
 		3083C62E2A4C19E000AE220B /* double-jump.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "double-jump.mp3"; sourceTree = "<group>"; };
 		3083C6312A4C1E3A00AE220B /* AsylumCafetaria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsylumCafetaria.swift; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 				3083C6312A4C1E3A00AE220B /* AsylumCafetaria.swift */,
 				3083C6332A4C1E7100AE220B /* PatientRoom.swift */,
 				4BFC23DE2A385EE700DD26E7 /* PipingSector.swift */,
+				30789B562A4F2A8B00CC02D5 /* SurgeryRoom.swift */,
 			);
 			path = "game stages";
 			sourceTree = "<group>";
@@ -111,6 +116,7 @@
 		30C5643D2A4D6B6D00D769E5 /* Backsound */ = {
 			isa = PBXGroup;
 			children = (
+				30789B582A4F454A00CC02D5 /* stage4-backsound.mp3 */,
 				30C564472A4D9B3E00D769E5 /* stage3-backsound.mp3 */,
 				30C5643F2A4D6BA200D769E5 /* stage2-backsound.mp3 */,
 				30A4A6412A4B2B9C00B3F69D /* stage1-backsound.mp3 */,
@@ -258,6 +264,7 @@
 				30C564402A4D6BA200D769E5 /* stage2-backsound.mp3 in Resources */,
 				30A4A6442A4B319800B3F69D /* pickup-item.mp3 in Resources */,
 				30FF2CD22A488B8D0075735F /* Assets.xcassets in Resources */,
+				30789B592A4F454A00CC02D5 /* stage4-backsound.mp3 in Resources */,
 				30C564452A4D6CEE00D769E5 /* knife.mp3 in Resources */,
 				30789B552A4EC64500CC02D5 /* butcher-growl.mp3 in Resources */,
 				30FF2CCE2A48718C0075735F /* game_menu.mov in Resources */,
@@ -276,6 +283,7 @@
 			files = (
 				4BFC23DF2A385EE700DD26E7 /* PipingSector.swift in Sources */,
 				30AF1B572A44426E00EC6B90 /* StaminaBar.swift in Sources */,
+				30789B572A4F2A8B00CC02D5 /* SurgeryRoom.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				3083C6322A4C1E3A00AE220B /* AsylumCafetaria.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,

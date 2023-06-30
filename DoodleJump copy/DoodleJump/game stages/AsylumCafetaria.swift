@@ -57,6 +57,8 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     var particlePlatform : SKEmitterNode = SKEmitterNode(fileNamed: "smoke")!
     var timer: Timer?
     var prevPlatformY = 0
+    var finalPlatformCreated = false
+    var finalPlatformPos = 0.0
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
@@ -185,12 +187,9 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         
         bestScore = defaults.integer(forKey: "best")
         
-        makePlatform(lowestValueY: 120, highestValueY: 300, name: "", img: "platform-2")
-        makePlatform(lowestValueY: 350, highestValueY: 500, name: "", img: "platform-2")
-        makePlatform(lowestValueY: 550, highestValueY: 700, name: "", img: "platform-2")
-        makePlatform(lowestValueY: 750, highestValueY: 950, name: "", img: "platform-2")
-        makePlatform(lowestValueY: 970, highestValueY: 1150, name: "", img: "platform-2")
-        makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "", img: "platform-2")
+        for _ in 0...6 {
+            makePlatform(name: "", img: "platform-2")
+        }
         
         cam.setScale(1.0)
         cam.position.x = player.position.x
@@ -293,7 +292,13 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             monster.position.y = player.position.y - 600
         }
         
-        monster.position.x = player.position.x
+        if finalPlatformPos > player.position.y {
+            monster.position.x = player.position.x
+        }
+        
+        if finalPlatformPos - player.position.y <= 50 {
+            doubleJumpIsEnabled = false
+        }
         
         var newPosition = player.position.x + motionActivity.getAccelerometerDataX()
         
@@ -338,23 +343,12 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             playMusic(music: "double-jump.mp3", loop: 0, volume: 1)
             
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1100, highestValueY: 1300, name:"", img: "platform-2")
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1350, highestValueY: 1550, name:"", img: "platform-2")
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1600, highestValueY: 1800, name:"", img: "platform-2")
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1850, highestValueY: 2050, name:"", img: "platform-2")
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 2100, highestValueY: 2300, name:"", img: "platform-2")
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 2350, highestValueY: 2550, name:"", img: "platform-2")
+            if !finalPlatformCreated {
+                for _ in 0...6 {
+                    if platformCount < maxPlatformCount - 1 {
+                        makePlatform(name:"", img: "platform-2")
+                    }
+                }
             }
             countdown = 8
             staminaBar.decreaseStaminaBar()
@@ -422,27 +416,35 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
                     }
                 }
                 
-                print(platformCount)
-                
                 if platformCount == maxPlatformCount {
-                    makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "", img: "platform-2")
+                    makePlatform(name: "", img: "platform-2")
                 } else if platformCount < maxPlatformCount {
                     if(platformheight < player.position.y){
                         platformheight = player.position.y + 20
                         randomPlatform = Int.random(in: 1...11)
                         if(randomPlatform < 4){
-                            makePlatform(lowestValueY: 970, highestValueY: 1150, name: "crack", img: "broken-platform-2")
-                            makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "", img: "platform-2")
+                            makePlatform(name: "crack", img: "broken-platform-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "crack", img: "broken-platform-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "", img: "platform-2")
                         }else if(randomPlatform == 4){
-                            makePlatform(lowestValueY: 970, highestValueY: 1150, name: "sticky", img: "platform-blood-2")
-                            makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "", img: "platform-2")
+                            makePlatform(name: "sticky", img: "platform-blood-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "sticky", img: "platform-blood-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "", img: "platform-2")
                         }else if(randomPlatform == 5){
-                            makePlatform(lowestValueY: 970, highestValueY: 1150, name: "", img: "platform-2")
-                            makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "sticky", img: "platform-blood-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "sticky", img: "platform-blood-2")
+                            makePlatform(name: "", img: "platform-2")
+                            makePlatform(name: "sticky", img: "platform-blood-2")
+                            makePlatform(name: "", img: "platform-2")
                         }
                         else{
-                            makePlatform(lowestValueY: 970, highestValueY: 1150, name: "", img: "platform-2")
-                            makePlatform(lowestValueY: 1200, highestValueY: 1350, name: "", img: "platform-2")
+                            for _ in 0...5 {
+                                makePlatform(name: "", img: "platform-2")
+                            }
                         }
                         addScore()
                     }
@@ -487,9 +489,9 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             playMusic(music: "butcher-growl.mp3", loop: 0, volume: 1)
             gameOver()
         }
-        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.knife.rawValue{
-            gameOver()
-        }
+//        if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.knife.rawValue{
+//            gameOver()
+//        }
         
         if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.lamp.rawValue{
             playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
@@ -562,13 +564,13 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     }
     
     
-    func makePlatform(lowestValueY: Int, highestValueY: Int, name: String, img: String){
+    func makePlatform(name: String, img: String){
         let platform = SKSpriteNode(imageNamed: img)
         platform.name = name
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 200 )
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 150 )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.5)
+        platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.35)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
         platform.physicsBody?.affectedByGravity = false
@@ -576,12 +578,14 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
         prevPlatformY = Int(platform.position.y)
+        finalPlatformPos = platform.position.y
         
         if platformCount == maxPlatformCount {
+            finalPlatformCreated = true
+            finalPlatformPos = platform.position.y
             platform.position.x = size.width / 2
             let casette = SKSpriteNode(imageNamed: "casette")
-            casette.position = CGPoint(x: size.width / 2, y: platform.position.y + 100
-            )
+            casette.position = CGPoint(x: size.width / 2, y: platform.position.y + 100)
             casette.zPosition = platform.zPosition + 1
             casette.physicsBody = SKPhysicsBody(rectangleOf: casette.size)
             casette.setScale(0.3)
@@ -594,20 +598,14 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             addChild(casette)
         } else {
             
-            var randomChance = 0
-            
-            if platformCount > 10 {
-                randomChance = Int(arc4random_uniform(20))
-            } else if platformCount == 3 {
-                randomChance = 5
-            }
+            var randomChance = Int(arc4random_uniform(20))
             
             if randomChance == 5 {
                 let radio = SKSpriteNode(imageNamed: "radio")
                 radio.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
                 radio.zPosition = platform.zPosition + 1
                 radio.physicsBody = SKPhysicsBody(rectangleOf: radio.size)
-                radio.setScale(0.3)
+                radio.setScale(0.2)
                 radio.physicsBody?.isDynamic = false
                 radio.physicsBody?.allowsRotation = false
                 radio.physicsBody?.affectedByGravity = false

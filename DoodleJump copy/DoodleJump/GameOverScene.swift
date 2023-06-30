@@ -26,8 +26,10 @@ class GameOverScene: SKScene
                 view.presentScene(PipingSector(size: self.size), transition: transition)
             case 2:
                 view.presentScene(AsylumCafetaria(size: self.size), transition: transition)
-            default:
+            case 3:
                 view.presentScene(PatientRoom(size: self.size), transition: transition)
+            default:
+                view.presentScene(SurgeryRoom(size: self.size), transition: transition)
             }
         }
     }

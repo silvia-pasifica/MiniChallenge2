@@ -54,6 +54,9 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     var facing = "front"
     var lampPosition = 0.0
     var prevPlatformY = 0
+    var finalPlatformCreated = false
+    var finalPlatformPos = 0.0
+    var radioGenerated = false
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
@@ -161,7 +164,7 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-        for _ in 0...6 {
+        for _ in 0...10 {
             makePlatform()
         }
         
@@ -264,6 +267,10 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         scoreLabel.position.y = player.position.y + 700
         bestScoreLabel.position.y = player.position.y + 650
         
+        if finalPlatformPos - player.position.y <= 50 {
+            doubleJumpIsEnabled = false
+        }
+        
         let newPosition = player.position.x + motionActivity.getAccelerometerDataX()
                 
         if platformCount == 1 {
@@ -321,8 +328,12 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             playMusic(music: "double-jump.mp3", loop: 0, volume: 1)
             
-            for _ in 0...6 {
-                makePlatform()
+            if !finalPlatformCreated {
+                for _ in 0...6 {
+                    if platformCount < maxPlatformCount - 1 {
+                        makePlatform()
+                    }
+                }
             }
         
             countdown = 8
@@ -372,8 +383,9 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
                 if platformCount == maxPlatformCount {
                     makePlatform()
                 } else if platformCount < maxPlatformCount {
-                    makePlatform()
-                    makePlatform()
+                    for _ in 0...5 {
+                        makePlatform()
+                    }
                     addScore()
                 }
                 
@@ -414,7 +426,6 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
                 playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
                 contactB.node?.removeFromParent()
-                
                 self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
@@ -446,10 +457,10 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     
     func makePlatform(){
         let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 200)
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 150)
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
-        platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.5)
+        platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.35)
         platform.physicsBody?.isDynamic = false
         platform.physicsBody?.allowsRotation = false
         platform.physicsBody?.affectedByGravity = false
@@ -460,6 +471,8 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         prevPlatformY = Int(platform.position.y)
         
         if platformCount == maxPlatformCount {
+            finalPlatformCreated = true
+            finalPlatformPos = platform.position.y
             platform.position.x = size.width / 2
             let casette = SKSpriteNode(imageNamed: "casette")
             casette.position = CGPoint(x: size.width / 2, y: platform.position.y + 100
@@ -480,8 +493,9 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             
             if platformCount > 10 {
                 randomChance = Int(arc4random_uniform(20))
-            } else if platformCount == 3 {
+            } else if platformCount == 1 && !radioGenerated {
                 randomChance = 5
+                radioGenerated = true
             }
             
             if randomChance == 5 {
@@ -489,7 +503,7 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
                 radio.position = CGPoint(x: CGFloat(GKRandomDistribution(lowestValue: Int(platform.position.x - 50), highestValue: Int(platform.position.x + 50)).nextInt()), y: platform.position.y + platform.size.height - 10)
                 radio.zPosition = platform.zPosition + 1
                 radio.physicsBody = SKPhysicsBody(rectangleOf: radio.size)
-                radio.setScale(0.3)
+                radio.setScale(0.2)
                 radio.physicsBody?.isDynamic = false
                 radio.physicsBody?.allowsRotation = false
                 radio.physicsBody?.affectedByGravity = false
