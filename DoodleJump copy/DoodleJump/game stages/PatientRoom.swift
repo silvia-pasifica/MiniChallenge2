@@ -53,6 +53,7 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
     var glow = false
     var radialNodes: [SKSpriteNode] = []
     var currentRadialIndex = 0
+    var prevPlatformY = 0
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
@@ -177,12 +178,9 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-        makePlatform(lowestValueY: 120, highestValueY: 300)
-        makePlatform(lowestValueY: 350, highestValueY: 500)
-        makePlatform(lowestValueY: 550, highestValueY: 700)
-        makePlatform(lowestValueY: 750, highestValueY: 950)
-        makePlatform(lowestValueY: 970, highestValueY: 1150)
-        makePlatform(lowestValueY: 1200, highestValueY: 1350)
+        for _ in 0...6 {
+            makePlatform()
+        }
         
         cam.setScale(1.0)
         cam.position.x = player.position.x
@@ -318,23 +316,11 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
             doubleJumpIsEnabled = false
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             playMusic(music: "double-jump.mp3", loop: 0, volume: 1)
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1100, highestValueY: 1300)
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1350, highestValueY: 1550)
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1600, highestValueY: 1800)
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 1850, highestValueY: 2050)
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 2100, highestValueY: 2300)
-            }
-            if platformCount < maxPlatformCount - 1 {
-                makePlatform(lowestValueY: 2350, highestValueY: 2550)
+            
+            for _ in 0...6 {
+                if platformCount < maxPlatformCount - 1 {
+                    makePlatform()
+                }
             }
             countdown = 8
             staminaBar.decreaseStaminaBar()
@@ -376,7 +362,7 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
                 }
                 
                 if platformCount == maxPlatformCount {
-                    makePlatform(lowestValueY: 1200, highestValueY: 1350)
+                    makePlatform()
                 } else if platformCount < maxPlatformCount {
                     if(platformHeight < player.position.y && score != 100){
                         platformHeight = player.position.y + 20
@@ -481,16 +467,15 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
     }
     //
     func createPlatform(){
-        makePlatform(lowestValueY: 1120, highestValueY: 1300)
-        makePlatform(lowestValueY: 1350, highestValueY: 1500)
-        makePlatform(lowestValueY: 1550, highestValueY: 1700)
-        makePlatform(lowestValueY: 1750, highestValueY: 1800)
+        for _ in 0...4 {
+            makePlatform()
+        }
     }
     
     
-    func makePlatform(lowestValueY: Int, highestValueY: Int){
+    func makePlatform(){
         let platform = SKSpriteNode(imageNamed: "platform")
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueY).nextInt() + Int(player.position.y) )
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 200)
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.5)
@@ -500,6 +485,8 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        
+        prevPlatformY = Int(platform.position.y)
         
         if platformCount == maxPlatformCount {
             platform.position.x = size.width / 2
@@ -621,7 +608,6 @@ class PatientRoom: SKScene, SKPhysicsContactDelegate{
             bestScore = score
             defaults.set(bestScore, forKey: "best")
         }
-        
     }
     
     func addScore(){

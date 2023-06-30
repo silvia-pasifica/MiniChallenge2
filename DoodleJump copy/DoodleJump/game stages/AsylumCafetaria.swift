@@ -56,6 +56,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     var currentRadialIndex = 0
     var particlePlatform : SKEmitterNode = SKEmitterNode(fileNamed: "smoke")!
     var timer: Timer?
+    var prevPlatformY = 0
     
     let textureArrayRight = [SKTexture(imageNamed: "jump-right-1"), SKTexture(imageNamed: "jump-right-2"), SKTexture(imageNamed: "jump-right-3")]
     let textureArrayFront = [SKTexture(imageNamed: "jump-front-1"), SKTexture(imageNamed: "jump-front-2"), SKTexture(imageNamed: "jump-front-3")]
@@ -564,7 +565,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     func makePlatform(lowestValueY: Int, highestValueY: Int, name: String, img: String){
         let platform = SKSpriteNode(imageNamed: img)
         platform.name = name
-        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueY).nextInt() + Int(player.position.y) )
+        platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 200 )
         platform.zPosition = 5
         platform.physicsBody = SKPhysicsBody(rectangleOf: platform.size)
         platform.setScale(platformCount == maxPlatformCount ? 1.0 : 0.5)
@@ -574,6 +575,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         platform.physicsBody?.categoryBitMask = bitmasks.platform.rawValue
         platform.physicsBody?.collisionBitMask = 0
         platform.physicsBody?.contactTestBitMask = bitmasks.player.rawValue
+        prevPlatformY = Int(platform.position.y)
         
         if platformCount == maxPlatformCount {
             platform.position.x = size.width / 2
