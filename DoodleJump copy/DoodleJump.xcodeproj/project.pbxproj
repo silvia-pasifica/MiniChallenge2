@@ -15,6 +15,10 @@
 		4BFC23DD2A38563B00DD26E7 /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC23DC2A38563A00DD26E7 /* StartScene.sks */; };
 		4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23DE2A385EE700DD26E7 /* GameScene.swift */; };
 		4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */; };
+		D506AEE42A4ECDE100E84667 /* Stage4.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506AEE32A4ECDE100E84667 /* Stage4.swift */; };
+		D506AEE92A4ED11A00E84667 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506AEE62A4ED11A00E84667 /* AudioPlayer.swift */; };
+		D506AEEA2A4ED11A00E84667 /* StaminaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506AEE72A4ED11A00E84667 /* StaminaBar.swift */; };
+		D506AEEB2A4ED11A00E84667 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506AEE82A4ED11A00E84667 /* MotionManager.swift */; };
 		D55952BB2A3C3D020001C94A /* Stage 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BA2A3C3D020001C94A /* Stage 3.swift */; };
 		D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */; };
 /* End PBXBuildFile section */
@@ -29,6 +33,10 @@
 		4BFC23DC2A38563A00DD26E7 /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
 		4BFC23DE2A385EE700DD26E7 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		D506AEE32A4ECDE100E84667 /* Stage4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stage4.swift; sourceTree = "<group>"; };
+		D506AEE62A4ED11A00E84667 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		D506AEE72A4ED11A00E84667 /* StaminaBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaminaBar.swift; sourceTree = "<group>"; };
+		D506AEE82A4ED11A00E84667 /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		D5364A272A4966F600073187 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		D5364A292A49671100073187 /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
 		D55952BA2A3C3D020001C94A /* Stage 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stage 3.swift"; sourceTree = "<group>"; };
@@ -73,9 +81,11 @@
 				4BFC23E02A39CCA600DD26E7 /* GameOverScene.swift */,
 				30444F412A3B06A6000B5350 /* MotionManager.swift */,
 				4BFC23DC2A38563A00DD26E7 /* StartScene.sks */,
+				D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */,
+				D506AEE52A4ED11A00E84667 /* Helper */,
 				4BFC23D22A384AED00DD26E7 /* Assets.xcassets */,
 				4BFC23D42A384AED00DD26E7 /* Preview Content */,
-				D55952BF2A43FDFB0001C94A /* SurgeryRoom.swift */,
+				D506AEE32A4ECDE100E84667 /* Stage4.swift */,
 			);
 			path = DoodleJump;
 			sourceTree = "<group>";
@@ -86,6 +96,17 @@
 				4BFC23D52A384AED00DD26E7 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D506AEE52A4ED11A00E84667 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				D506AEE62A4ED11A00E84667 /* AudioPlayer.swift */,
+				D506AEE72A4ED11A00E84667 /* StaminaBar.swift */,
+				D506AEE82A4ED11A00E84667 /* MotionManager.swift */,
+			);
+			name = Helper;
+			path = "../../../../../../Downloads/MiniChallenge2-main-2/DoodleJump copy/DoodleJump/game stages/Helper";
 			sourceTree = "<group>";
 		};
 		D5364A262A4966F600073187 /* Frameworks */ = {
@@ -170,11 +191,15 @@
 			files = (
 				D55952C02A43FDFB0001C94A /* SurgeryRoom.swift in Sources */,
 				4BFC23DF2A385EE700DD26E7 /* GameScene.swift in Sources */,
+				D506AEE92A4ED11A00E84667 /* AudioPlayer.swift in Sources */,
 				30444F422A3B06A6000B5350 /* MotionManager.swift in Sources */,
 				4BFC23D12A384AEC00DD26E7 /* ContentView.swift in Sources */,
+				D506AEEB2A4ED11A00E84667 /* MotionManager.swift in Sources */,
 				D55952BB2A3C3D020001C94A /* Stage 3.swift in Sources */,
 				4BFC23E12A39CCA600DD26E7 /* GameOverScene.swift in Sources */,
+				D506AEEA2A4ED11A00E84667 /* StaminaBar.swift in Sources */,
 				4BFC23CF2A384AEC00DD26E7 /* DoodleJumpApp.swift in Sources */,
+				D506AEE42A4ECDE100E84667 /* Stage4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
