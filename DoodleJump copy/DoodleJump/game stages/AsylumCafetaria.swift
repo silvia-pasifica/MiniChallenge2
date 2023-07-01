@@ -11,18 +11,18 @@ import GameplayKit
 
 class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     let checkpoint: Int = 2
-    let bg1 = SKSpriteNode(imageNamed: "bg2-1")
+    var bg1: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform-2")
-    let bg2 = SKSpriteNode(imageNamed: "bg2-2")
-    let bg3 = SKSpriteNode(imageNamed: "bg2-3")
-    let bg4 = SKSpriteNode(imageNamed: "bg2-4")
-    let bg5 = SKSpriteNode(imageNamed: "bg2-5")
-    let bg6 = SKSpriteNode(imageNamed: "bg2-6")
-    let bg7 = SKSpriteNode(imageNamed: "bg2-7")
-    let bg8 = SKSpriteNode(imageNamed: "bg2-8")
-    let bg9 = SKSpriteNode(imageNamed: "bg2-9")
-    let bg10 = SKSpriteNode(imageNamed: "bg2-10")
+    var bg2: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-2")
+    var bg3: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-3")
+    var bg4: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-4")
+    var bg5: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-5")
+    var bg6: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-6")
+    var bg7: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-7")
+    var bg8: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-8")
+    var bg9: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-9")
+    var bg10: SKSpriteNode? = SKSpriteNode(imageNamed: "bg2-10")
     
     let maxPlatformCount = 10
     let circleNode = SKShapeNode(circleOfRadius: 500)
@@ -85,55 +85,55 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         
-        bg1.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg1.setScale(0.37)
-        bg1.zPosition = 1
-        addChild(bg1)
+        bg1!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg1!.setScale(0.37)
+        bg1!.zPosition = 1
+        addChild(bg1!)
         
-        bg2.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg2.zPosition = 2
-        bg2.setScale(0.4)
-        addChild(bg2)
+        bg2!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg2!.zPosition = 2
+        bg2!.setScale(0.4)
+        addChild(bg2!)
         
-        bg3.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg3.zPosition = 3
-        bg3.setScale(0.4)
-        addChild(bg3)
+        bg3!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg3!.zPosition = 3
+        bg3!.setScale(0.4)
+        addChild(bg3!)
         
-        bg4.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg4.zPosition = 3
-        bg4.setScale(0.4)
-        addChild(bg4)
+        bg4!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg4!.zPosition = 3
+        bg4!.setScale(0.4)
+        addChild(bg4!)
         
-        bg5.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg5.zPosition = 3
-        bg5.setScale(0.4)
-        addChild(bg5)
+        bg5!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg5!.zPosition = 3
+        bg5!.setScale(0.4)
+        addChild(bg5!)
         
-        bg6.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg6.zPosition = 3
-        bg6.setScale(0.4)
-        addChild(bg6)
+        bg6!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg6!.zPosition = 3
+        bg6!.setScale(0.4)
+        addChild(bg6!)
         
-        bg7.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg7.zPosition = 3
-        bg7.size = CGSize(width: size.width + 40, height: size.height)
-        addChild(bg7)
+        bg7!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg7!.zPosition = 3
+        bg7!.size = CGSize(width: size.width + 40, height: size.height)
+        addChild(bg7!)
         
-        bg8.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg8.zPosition = 3
-        bg8.setScale(0.4)
-        addChild(bg8)
+        bg8!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg8!.zPosition = 3
+        bg8!.setScale(0.4)
+        addChild(bg8!)
         
-        bg9.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg9.zPosition = 3
-        bg9.setScale(0.4)
-        addChild(bg9)
+        bg9!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg9!.zPosition = 3
+        bg9!.setScale(0.4)
+        addChild(bg9!)
 
-        bg10.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg10.zPosition = 3
-        bg10.setScale(0.4)
-        addChild(bg10)
+        bg10!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg10!.zPosition = 3
+        bg10!.setScale(0.4)
+        addChild(bg10!)
         
         physicsWorld.contactDelegate = self
         
@@ -248,16 +248,16 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
     override func update(_ currentTime: TimeInterval) {
         
         cam.position.y = player.position.y + 200
-        bg1.position.y = player.position.y + 200
-        bg2.position.y = player.position.y + 200
-        bg3.position.y = player.position.y + 200
-        bg4.position.y = player.position.y + 200
-        bg5.position.y = player.position.y + 200
-        bg6.position.y = player.position.y + 200
-        bg7.position.y = player.position.y + 200
-        bg8.position.y = player.position.y + 200
-        bg9.position.y = player.position.y + 200
-        bg10.position.y = player.position.y + 200
+        bg1!.position.y = player.position.y + 200
+        bg2!.position.y = player.position.y + 200
+        bg3!.position.y = player.position.y + 200
+        bg4!.position.y = player.position.y + 200
+        bg5!.position.y = player.position.y + 200
+        bg6!.position.y = player.position.y + 200
+        bg7!.position.y = player.position.y + 200
+        bg8!.position.y = player.position.y + 200
+        bg9!.position.y = player.position.y + 200
+        bg10!.position.y = player.position.y + 200
         
         staminaBar.updatePosition(playerPos: player.position.y)
         
@@ -270,7 +270,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         let knifeIncrementPerSecond: CGFloat = 20
         if(firstTouch == true){
             cam.position.y += camIncrementPerSecond
-            bg1.position.y = cam.position.y
+            bg1!.position.y = cam.position.y
             scoreLabel.position.y = cam.position.y + 600
             bestScoreLabel.position.y = cam.position.y + 550
         }
@@ -282,7 +282,7 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
         
         if cam.position.y - player.position.y < 50{
             cam.position.y = player.position.y + 50
-            bg1.position.y = cam.position.y
+            bg1!.position.y = cam.position.y
             scoreLabel.position.y = cam.position.y + 600
             bestScoreLabel.position.y = cam.position.y + 550
         }
@@ -306,11 +306,11 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
             let difference = player.position.x - newPosition
             
             player.position.x = newPosition
-            bg2.position.x += difference / 11
-            bg3.position.x += difference / 4
-            bg4.position.x += difference / 8
-            bg5.position.x -= difference / 10
-            bg7.position.x += difference / 10
+            bg2!.position.x += difference / 11
+            bg3!.position.x += difference / 4
+            bg4!.position.x += difference / 8
+            bg5!.position.x -= difference / 10
+            bg7!.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
                 if facing != "front" {
@@ -504,6 +504,19 @@ class AsylumCafetaria: SKScene, SKPhysicsContactDelegate{
                 playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
                 contactB.node?.removeFromParent()
                 
+                bg1 = nil
+                bg2 = nil
+                bg3 = nil
+                bg4 = nil
+                bg5 = nil
+                bg6 = nil
+                bg7 = nil
+                bg8 = nil
+                bg9 = nil
+                bg10 = nil
+                self.view?.scene?.removeAllActions()
+                self.view?.scene?.removeAllChildren()
+                timer?.invalidate()
                 self.view?.presentScene(PatientRoom(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }

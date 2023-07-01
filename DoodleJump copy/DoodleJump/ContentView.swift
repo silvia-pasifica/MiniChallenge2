@@ -37,14 +37,22 @@ class StartScene: SKScene{
                 videoLooper?.disableLooping()
                 videoNode?.pause()
                 self.videoLooper = nil
-                self.view?.presentScene(PipingSector(size: self.size), transition: SKTransition.fade(withDuration: 3))
+                videoNode = nil
+                self.view?.scene?.removeAllActions()
+                self.view?.scene?.removeAllChildren()
+                self.view?.presentScene(SurgeryRoom(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
+    }
+    
+    deinit {
+        print("deinitialized")
     }
     
 }
 
 struct ContentView: View {
+    
     var body: some View {
         VStack {
             SpriteView(scene: StartScene(fileNamed: "StartScene")!)

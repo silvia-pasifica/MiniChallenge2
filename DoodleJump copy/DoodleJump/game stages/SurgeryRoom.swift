@@ -9,20 +9,20 @@ import SpriteKit
 import GameplayKit
 
 class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
-    let bg1 = SKSpriteNode(imageNamed: "bg4-1")
+    var bg1: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-1")
     let player = SKSpriteNode(imageNamed: "idle-front")
     let ground = SKSpriteNode(imageNamed: "platform-4")
-    let bg2 = SKSpriteNode(imageNamed: "bg4-2")
-    let bg3 = SKSpriteNode(imageNamed: "bg4-3")
-    let bg4 = SKSpriteNode(imageNamed: "bg4-4")
-    let bg5 = SKSpriteNode(imageNamed: "bg4-5")
-    let bg6 = SKSpriteNode(imageNamed: "bg4-6")
-    let bg7 = SKSpriteNode(imageNamed: "bg4-7")
-    let bg8 = SKSpriteNode(imageNamed: "bg4-8")
-    let bg9 = SKSpriteNode(imageNamed: "bg4-9")
-    let bg10 = SKSpriteNode(imageNamed: "bg4-10")
-    let bg11 = SKSpriteNode(imageNamed: "bg4-11")
-    let bg12 = SKSpriteNode(imageNamed: "bg4-12")
+    var bg2: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-2")
+    var bg3: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-3")
+    var bg4: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-4")
+    var bg5: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-5")
+    var bg6: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-6")
+    var bg7: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-7")
+    var bg8: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-8")
+    var bg9: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-9")
+    var bg10: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-10")
+    var bg11: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-11")
+    var bg12: SKSpriteNode? = SKSpriteNode(imageNamed: "bg4-12")
    
     let gameOverLine = SKSpriteNode(color: .red, size: CGSize(width: 1000, height: 10))
     var firstTouch = false
@@ -81,65 +81,65 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         
-        bg1.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg1.setScale(0.37)
-        bg1.zPosition = 1
-        addChild(bg1)
+        bg1!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg1!.setScale(0.37)
+        bg1!.zPosition = 1
+        addChild(bg1!)
         
-        bg2.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg2.zPosition = 2
-        bg2.setScale(0.4)
-        addChild(bg2)
+        bg2!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg2!.zPosition = 2
+        bg2!.setScale(0.4)
+        addChild(bg2!)
         
-        bg3.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg3.zPosition = 3
-        bg3.setScale(0.4)
-        addChild(bg3)
+        bg3!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg3!.zPosition = 3
+        bg3!.setScale(0.4)
+        addChild(bg3!)
         
-        bg4.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg4.zPosition = 3
-        bg4.setScale(0.4)
-        addChild(bg4)
+        bg4!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg4!.zPosition = 3
+        bg4!.setScale(0.4)
+        addChild(bg4!)
         
-        bg5.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg5.zPosition = 3
-        bg5.setScale(0.4)
-        addChild(bg5)
+        bg5!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg5!.zPosition = 3
+        bg5!.setScale(0.4)
+        addChild(bg5!)
         
-        bg6.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg6.zPosition = 3
-        bg6.setScale(0.4)
-        addChild(bg6)
+        bg6!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg6!.zPosition = 3
+        bg6!.setScale(0.4)
+        addChild(bg6!)
         
-        bg7.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg7.zPosition = 3
-        bg7.size = CGSize(width: size.width + 40, height: size.height)
-        addChild(bg7)
+        bg7!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg7!.zPosition = 3
+        bg7!.size = CGSize(width: size.width + 40, height: size.height)
+        addChild(bg7!)
         
-        bg8.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg8.zPosition = 3
-        bg8.setScale(0.4)
-        addChild(bg8)
+        bg8!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg8!.zPosition = 3
+        bg8!.setScale(0.4)
+        addChild(bg8!)
         
-        bg9.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg9.zPosition = 3
-        bg9.setScale(0.4)
-        addChild(bg9)
+        bg9!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg9!.zPosition = 3
+        bg9!.setScale(0.4)
+        addChild(bg9!)
         
-        bg10.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg10.zPosition = 3
-        bg10.setScale(0.4)
-        addChild(bg10)
+        bg10!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg10!.zPosition = 3
+        bg10!.setScale(0.4)
+        addChild(bg10!)
         
-        bg11.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg11.zPosition = 3
-        bg11.setScale(0.4)
-        addChild(bg11)
+        bg11!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg11!.zPosition = 3
+        bg11!.setScale(0.4)
+        addChild(bg11!)
         
-        bg12.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg12.zPosition = 3
-        bg12.setScale(0.4)
-        addChild(bg12)
+        bg12!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg12!.zPosition = 3
+        bg12!.setScale(0.4)
+        addChild(bg12!)
         
         physicsWorld.contactDelegate = self
         
@@ -179,7 +179,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         gameOverLine.physicsBody?.contactTestBitMask = bitmasks.platform.rawValue | bitmasks.player.rawValue
         addChild(gameOverLine)
         
-        createDynamicPlatform(lowestValueY: 120, highestValueY: 300)
+        createDynamicPlatform()
         for _ in 0...5 {
             makePlatform(name: "", img: "platform-4")
         }
@@ -241,18 +241,18 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
     override func update(_ currentTime: TimeInterval) {
         
         cam.position.y = player.position.y + 200
-        bg1.position.y = player.position.y + 200
-        bg2.position.y = player.position.y + 200
-        bg3.position.y = player.position.y + 200
-        bg4.position.y = player.position.y + 200
-        bg5.position.y = player.position.y + 200
-        bg6.position.y = player.position.y + 200
-        bg7.position.y = player.position.y + 200
-        bg8.position.y = player.position.y + 200
-        bg9.position.y = player.position.y + 200
-        bg10.position.y = player.position.y + 200
-        bg11.position.y = player.position.y + 200
-        bg12.position.y = player.position.y + 200
+        bg1!.position.y = player.position.y + 200
+        bg2!.position.y = player.position.y + 200
+        bg3!.position.y = player.position.y + 200
+        bg4!.position.y = player.position.y + 200
+        bg5!.position.y = player.position.y + 200
+        bg6!.position.y = player.position.y + 200
+        bg7!.position.y = player.position.y + 200
+        bg8!.position.y = player.position.y + 200
+        bg9!.position.y = player.position.y + 200
+        bg10!.position.y = player.position.y + 200
+        bg11!.position.y = player.position.y + 200
+        bg12!.position.y = player.position.y + 200
         
         staminaBar.updatePosition(playerPos: player.position.y)
         
@@ -265,12 +265,12 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         gameOverLine.position.y = cam.position.y - 700
         if(firstTouch == true){
             cam.position.y += camIncrementPerSecond
-            bg1.position.y = cam.position.y
+            bg1!.position.y = cam.position.y
            
         }
         if cam.position.y - player.position.y < 50{
             cam.position.y = player.position.y + 50
-            bg1.position.y = cam.position.y
+            bg1!.position.y = cam.position.y
             
         }
         
@@ -284,11 +284,11 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
             let difference = player.position.x - newPosition
             
             player.position.x = newPosition
-            bg2.position.x += difference / 11
-            bg3.position.x += difference / 4
-            bg4.position.x += difference / 8
-            bg5.position.x -= difference / 10
-            bg7.position.x += difference / 10
+            bg2!.position.x += difference / 11
+            bg3!.position.x += difference / 4
+            bg4!.position.x += difference / 8
+            bg5!.position.x -= difference / 10
+            bg7!.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
                 if facing != "front" {
@@ -315,7 +315,6 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
     }
     
     @objc func doubleTapped() {
-        
         if doubleJumpIsEnabled {
             doubleJumpIsEnabled = false
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
@@ -381,15 +380,15 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
                             makePlatform(name: "", img: "platform-4")
                             makePlatform(name: "", img: "platform-4")
                         }else if(randomPlatform == 4){
-                            dynamicPlatform(lowestValueY: 1200, highestValueY: 1350)
+                            dynamicPlatform()
                             makePlatform(name: "", img: "platform-4")
-                            dynamicPlatform(lowestValueY: 1200, highestValueY: 1350)
+                            dynamicPlatform()
                             makePlatform(name: "", img: "platform-4")
                             makePlatform(name: "", img: "platform-4")
                         }else if(randomPlatform == 5){
-                            createDynamicPlatform(lowestValueY: 970, highestValueY: 1150)
+                            createDynamicPlatform()
                             makePlatform(name: "", img: "platform-4")
-                            createDynamicPlatform(lowestValueY: 970, highestValueY: 1150)
+                            createDynamicPlatform()
                             makePlatform(name: "", img: "platform-4")
                             makePlatform(name: "", img: "platform-4")
                         }
@@ -439,7 +438,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
                 
                 if score % 3 == 0{
                     let randMonster = random.nextInt()
-                    playMusic(music: "hands-wall.mp3", loop: 0, volume: 1)
+//                    playMusic(music: "hands-wall.mp3", loop: 0, volume: 1)
                     if randMonster == 0 {
                         dynamicMonster(imageMonsterName: "tanganKiri1", platformLowestXPosition: 0, platformXHighestPosition: 0, platformLowestYPosition: 1000, platformYHighestPosition: 1200, leftOrRight: 1, scale: 0.4, name: "tangan")
                         dynamicMonster(imageMonsterName: "tanganKanan1", platformLowestXPosition: 0, platformXHighestPosition: 405, platformLowestYPosition: 1000, platformYHighestPosition: 1200, leftOrRight: 2, scale: 0.4, name: "tangan")
@@ -484,7 +483,21 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
             if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
                 playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
                 contactB.node?.removeFromParent()
-                
+                bg1 = nil
+                bg2 = nil
+                bg3 = nil
+                bg4 = nil
+                bg5 = nil
+                bg6 = nil
+                bg7 = nil
+                bg8 = nil
+                bg9 = nil
+                bg10 = nil
+                bg11 = nil
+                bg12 = nil
+                timer?.invalidate()
+                self.view?.scene?.removeAllActions()
+                self.view?.scene?.removeAllChildren()
 //                self.view?.presentScene(SurgeryRoom(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
@@ -502,8 +515,8 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        player.physicsBody?.isDynamic = true
         if firstTouch == false{
+            player.physicsBody?.isDynamic = true
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             firstTouch = true
             player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
@@ -512,7 +525,6 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         }
         
     }
-    
     
     func makePlatform(name: String, img: String){
         let platform = SKSpriteNode(imageNamed: img)
@@ -568,7 +580,7 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         addChild(platform)
     }
     
-    func createDynamicPlatform(lowestValueY: Int, highestValueY: Int) {
+    func createDynamicPlatform() {
         platform = SKSpriteNode(imageNamed: "platform-4")
         platform.position = CGPoint(x: GKRandomDistribution(lowestValue: 20, highestValue: 350).nextInt(), y: prevPlatformY + 150)
         platform.zPosition = 5
@@ -599,10 +611,10 @@ class SurgeryRoom: SKScene, SKPhysicsContactDelegate{
         platform.run(repeatAction)
     }
     
-    func dynamicPlatform(lowestValueY: Int, highestValueY: Int) {
+    func dynamicPlatform() {
 
         platform = SKSpriteNode(imageNamed: "platform-4")
-        platform.position = CGPoint(x: Int(frame.minX), y: GKRandomDistribution( lowestValue: lowestValueY, highestValue: highestValueY).nextInt() + Int(player.position.y) )
+        platform.position = CGPoint(x: Int(frame.minX), y: prevPlatformY + 150)
         platform.zPosition = 5
         platform.setScale(0.5)
         platform.physicsBody = SKPhysicsBody(texture: platform.texture!, size: platform.size)

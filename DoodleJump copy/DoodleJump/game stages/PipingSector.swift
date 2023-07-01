@@ -12,17 +12,17 @@ import GameplayKit
 class PipingSector: SKScene, SKPhysicsContactDelegate{
 
     let checkpoint = 1
-    let bg1 = SKSpriteNode(imageNamed: "bg1-1")
-    let player = SKSpriteNode(imageNamed: "idle-front")
-    let ground = SKSpriteNode(imageNamed: "platform")
-    let bg2 = SKSpriteNode(imageNamed: "bg1-2")
-    let bg3 = SKSpriteNode(imageNamed: "bg1-3")
-    let bg4 = SKSpriteNode(imageNamed: "bg1-4")
-    let bg5 = SKSpriteNode(imageNamed: "bg1-5")
-    let bg6 = SKSpriteNode(imageNamed: "bg1-6")
-    let bg7 = SKSpriteNode(imageNamed: "bg1-7")
-    let bg8 = SKSpriteNode(imageNamed: "bg1-8")
-    let bg9 = SKSpriteNode(imageNamed: "bg1-9")
+    var bg1: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-1")
+    var player = SKSpriteNode(imageNamed: "idle-front")
+    var ground = SKSpriteNode(imageNamed: "platform")
+    var bg2: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-2")
+    var bg3: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-3")
+    var bg4: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-4")
+    var bg5: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-5")
+    var bg6: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-6")
+    var bg7: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-7")
+    var bg8: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-8")
+    var bg9: SKSpriteNode? = SKSpriteNode(imageNamed: "bg1-9")
     
     let maxPlatformCount = 10
     var lampSpawnTimer: Timer?
@@ -81,50 +81,50 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         
-        bg1.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg1.setScale(0.37)
-        bg1.zPosition = 1
-        addChild(bg1)
+        bg1!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg1!.setScale(0.37)
+        bg1!.zPosition = 1
+        addChild(bg1!)
         
-        bg2.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg2.zPosition = 2
-        bg2.setScale(0.4)
-        addChild(bg2)
+        bg2!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg2!.zPosition = 2
+        bg2!.setScale(0.4)
+        addChild(bg2!)
         
-        bg3.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg3.zPosition = 3
-        bg3.setScale(0.4)
-        addChild(bg3)
+        bg3!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg3!.zPosition = 3
+        bg3!.setScale(0.4)
+        addChild(bg3!)
         
-        bg4.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg4.zPosition = 3
-        bg4.setScale(0.4)
-        addChild(bg4)
+        bg4!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg4!.zPosition = 3
+        bg4!.setScale(0.4)
+        addChild(bg4!)
         
-        bg5.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg5.zPosition = 3
-        bg5.setScale(0.4)
-        addChild(bg5)
+        bg5!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg5!.zPosition = 3
+        bg5!.setScale(0.4)
+        addChild(bg5!)
         
-        bg6.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg6.zPosition = 3
-        bg6.setScale(0.4)
-        addChild(bg6)
+        bg6!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg6!.zPosition = 3
+        bg6!.setScale(0.4)
+        addChild(bg6!)
         
-        bg7.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg7.zPosition = 3
-        bg7.size = CGSize(width: size.width + 40, height: size.height)
-        addChild(bg7)
+        bg7!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg7!.zPosition = 3
+        bg7!.size = CGSize(width: size.width + 40, height: size.height)
+        addChild(bg7!)
         
-        bg8.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg8.zPosition = 3
-        bg8.setScale(0.4)
-        addChild(bg8)
+        bg8!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg8!.zPosition = 3
+        bg8!.setScale(0.4)
+        addChild(bg8!)
         
-        bg9.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bg9.zPosition = 3
-        bg9.setScale(0.4)
-        addChild(bg9)
+        bg9!.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bg9!.zPosition = 3
+        bg9!.setScale(0.4)
+        addChild(bg9!)
         
         physicsWorld.contactDelegate = self
         
@@ -207,7 +207,7 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
         
         handTapLabel.zPosition = 3000
         handTapLabel.position = CGPoint(x: size.width / 2, y: 10)
-        handTapLabel.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.2, duration: 1), SKAction.scale(to: 1, duration: 1)])))
+        handTapLabel.run(SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1.2, duration: 1), SKAction.scale(to: 1, duration: 1)])), withKey: "hand-tap-animation")
         addChild(handTapLabel)
         
         playMusic(music: "stage1-backsound.mp3", loop: -1, volume: 1)
@@ -243,15 +243,15 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
     override func update(_ currentTime: TimeInterval) {
         
         cam.position.y = player.position.y + 200
-        bg1.position.y = player.position.y + 200
-        bg2.position.y = player.position.y + 200
-        bg3.position.y = player.position.y + 200
-        bg4.position.y = player.position.y + 200
-        bg5.position.y = player.position.y + 200
-        bg6.position.y = player.position.y + 200
-        bg7.position.y = player.position.y + 200
-        bg8.position.y = player.position.y + 200
-        bg9.position.y = player.position.y + 200
+        bg1!.position.y = player.position.y + 200
+        bg2!.position.y = player.position.y + 200
+        bg3!.position.y = player.position.y + 200
+        bg4!.position.y = player.position.y + 200
+        bg5!.position.y = player.position.y + 200
+        bg6!.position.y = player.position.y + 200
+        bg7!.position.y = player.position.y + 200
+        bg8!.position.y = player.position.y + 200
+        bg9!.position.y = player.position.y + 200
         howToPlayLabel.position.y = player.position.y - 100
         handTapLabel.position.y = player.position.y - 150
         
@@ -285,30 +285,30 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             let difference = player.position.x - newPosition
             
             player.position.x = newPosition
-            bg2.position.x += difference / 11
-            bg3.position.x += difference / 4
-            bg4.position.x += difference / 8
-            bg5.position.x -= difference / 10
-            bg7.position.x += difference / 10
+            bg2!.position.x += difference / 11
+            bg3!.position.x += difference / 4
+            bg4!.position.x += difference / 8
+            bg5!.position.x -= difference / 10
+            bg7!.position.x += difference / 10
             
             if player.position.x >= 150 && player.position.x <= 240 {
                 if facing != "front" {
                     facing = "front"
                     player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
-                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)), withKey: "player-front-animation")
                 }
             } else if player.position.x < 150 {
                 if facing != "left" {
                     facing = "left"
                     player.run(SKAction.setTexture(textureArrayLeft[0], resize: true))
-                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayLeft, timePerFrame: 0.1)))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayLeft, timePerFrame: 0.1)), withKey: "player-left-animation")
                 }
             } else {
                 if facing != "right" {
                     facing = "right"
                     player.texture = textureArrayRight[0]
                     player.run(SKAction.setTexture(textureArrayRight[0], resize: true))
-                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayRight, timePerFrame: 0.1)))
+                    player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayRight, timePerFrame: 0.1)), withKey: "player-right-animation")
                 }
             }
         }
@@ -426,10 +426,23 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             if contactA.categoryBitMask == bitmasks.player.rawValue && contactB.categoryBitMask == bitmasks.casette.rawValue{
                 playMusic(music: "pickup-item-2.mp3", loop: 0, volume: 1)
                 contactB.node?.removeFromParent()
+                bg1 = nil
+                bg2 = nil
+                bg3 = nil
+                bg4 = nil
+                bg5 = nil
+                bg6 = nil
+                bg7 = nil
+                bg8 = nil
+                bg9 = nil
+                self.view?.scene?.removeAllActions()
+                self.view?.scene?.removeAllChildren()
+                timer?.invalidate()
                 self.view?.presentScene(AsylumCafetaria(size: self.size), transition: SKTransition.fade(withDuration: 3))
             }
         }
     }
+    
     
     func glowArea(){
         let fadeOutAction = SKAction.fadeAlpha(to: 0.3, duration: 5.0)
@@ -448,7 +461,7 @@ class PipingSector: SKScene, SKPhysicsContactDelegate{
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 1000 ))
             firstTouch = true
             player.run(SKAction.setTexture(textureArrayFront[0], resize: true))
-            player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)))
+            player.run(SKAction.repeatForever(SKAction.animate(with: textureArrayFront, timePerFrame: 0.1)), withKey: "player-animation")
             motionActivity.startAccelorometerUpdate()
             handTapLabel.isHidden = true
             howToPlayLabel.isHidden = true
